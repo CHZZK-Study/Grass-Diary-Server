@@ -1,5 +1,6 @@
 package chzzk.grassdiary.domain.member;
 
+import chzzk.grassdiary.domain.base.BaseCreatedTimeEntity;
 import chzzk.grassdiary.domain.color.ColorCode;
 import chzzk.grassdiary.domain.member.Member;
 import jakarta.persistence.Entity;
@@ -13,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @Entity
-public class MemberPurchasedColor {
+public class MemberPurchasedColor extends BaseCreatedTimeEntity {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
     private Long id;

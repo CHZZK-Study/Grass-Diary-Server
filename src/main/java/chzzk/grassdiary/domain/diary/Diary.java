@@ -1,5 +1,6 @@
 package chzzk.grassdiary.domain.diary;
 
+import chzzk.grassdiary.domain.base.BaseTimeEntity;
 import chzzk.grassdiary.domain.color.ConditionLevel;
 import chzzk.grassdiary.domain.member.Member;
 import jakarta.persistence.Column;
@@ -14,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Diary {
+public class Diary extends BaseTimeEntity {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,6 +29,7 @@ public class Diary {
     private String content;
     private Boolean isPrivate;
     private Boolean hasImage;
+    private Boolean hasTag;
     private Integer likeCount;
 
 }

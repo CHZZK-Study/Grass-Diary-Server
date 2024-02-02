@@ -1,5 +1,6 @@
 package chzzk.grassdiary.domain.reward;
 
+import chzzk.grassdiary.domain.base.BaseCreatedTimeEntity;
 import chzzk.grassdiary.domain.member.Member;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @Entity
-public class RewardHistory {
+public class RewardHistory extends BaseCreatedTimeEntity {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
     private Long id;
