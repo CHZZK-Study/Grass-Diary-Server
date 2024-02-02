@@ -8,6 +8,7 @@ public class GrassdiaryApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(GrassdiaryApplication.class, args);
+		System.out.println("1234");
 	}
 
 }
