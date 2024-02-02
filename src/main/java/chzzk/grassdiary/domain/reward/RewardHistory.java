@@ -19,6 +19,7 @@ public class RewardHistory {
 
     @ManyToOne
     private Member member;
+    @ManyToOne
     private RewardType rewardType;
     private Integer rewardPoint;
 }
