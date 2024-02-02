@@ -6,11 +6,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -20,8 +17,8 @@ public class DiaryTag {
     @GeneratedValue( strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany
-    private List<MemberTags> memberTags;
+    @ManyToOne
+    private MemberTags memberTags;
     @ManyToOne
     private Diary diary;
 }
