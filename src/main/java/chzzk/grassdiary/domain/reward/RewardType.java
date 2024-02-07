@@ -1,19 +1,14 @@
 package chzzk.grassdiary.domain.reward;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
-@Entity
-public class RewardType {
-    @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY)
-    private Long id;
+public enum RewardType {
+    PLUS_DIARY_WRITE("일기 작성"),
+    MINUS_SHOP_PURCHASE("상점 구매");
+    private final String name;
 
-    private String type;
+    RewardType(String name) {
+        this.name = name;
+    }
 }

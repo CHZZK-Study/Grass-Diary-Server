@@ -1,6 +1,7 @@
 package chzzk.grassdiary.domain.diary.tag;
 
 import chzzk.grassdiary.domain.member.Member;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,7 +15,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 public class MemberTags {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "memberTags_id")
     private Long id;
 
     @ManyToOne
