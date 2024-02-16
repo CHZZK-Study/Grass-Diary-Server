@@ -18,4 +18,9 @@ public class MyPageController {
     public ResponseEntity<?> getProfileInfo(@PathVariable Long memberId) {
         return ResponseEntity.ok(myPageService.findProfileById(memberId));
     }
+
+    @GetMapping("api/grass/{memberId}")
+    public ResponseEntity<?> getGrassHistory(@PathVariable Long memberId) {
+        return ResponseEntity.ok(myPageService.findGrassHistoryById(memberId));
+    }
 }
