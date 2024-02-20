@@ -15,14 +15,13 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Setter // DBTest에서 임시 사용
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Diary extends BaseTimeEntity {
     @Id
@@ -51,4 +50,24 @@ public class Diary extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     private ConditionLevel conditionLevel;
+
+    @Builder
+    public Diary(Long id, Member member, String content, Boolean isPrivate, List<DiaryLike> diaryLikes, Boolean hasImage, Boolean hasTag, ConditionLevel conditionLevel) {
+        this.id = id;
+        this.member = member;
+        this.content = content;
+        this.isPrivate = isPrivate;
+        this.diaryLikes = diaryLikes;
+        this.hasImage = hasImage;
+        this.hasTag = hasTag;
+        this.conditionLevel = conditionLevel;
+    }
+
+    public void update(String content, Boolean isPrivate, Boolean hasImage, Boolean hasTag, ConditionLevel conditionLevel) {
+        this.content = content;
+        this.isPrivate = isPrivate;
+        this.hasImage = hasImage;
+        this.hasTag = hasTag;
+        this.conditionLevel = conditionLevel;
+    }
 }
