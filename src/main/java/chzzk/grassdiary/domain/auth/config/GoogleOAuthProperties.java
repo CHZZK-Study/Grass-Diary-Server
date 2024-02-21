@@ -31,4 +31,7 @@ public class GoogleOAuthProperties {
 
     @Value("${oauth2.client.provider.google.token-uri}")
     private String tokenUri;
+
+    @Value("${oauth2.client.provider.google.user-info-uri}")
+    private String userInfoUri;
 }
