@@ -12,4 +12,6 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
     @Query("SELECT d FROM Diary d WHERE d.member.id = :memberId AND " +
             "d.createdAt >= :startOfDay AND d.createdAt <= :endOfDay")
     Diary findByMemberIdAndCreatedAtBetween(Long memberId, LocalDateTime startOfDay, LocalDateTime endOfDay);
+
+    List<Diary> findAllByMemberId(Long memberId);
 }

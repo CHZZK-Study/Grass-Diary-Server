@@ -5,6 +5,7 @@ import chzzk.grassdiary.domain.diary.DiaryRepository;
 import chzzk.grassdiary.domain.diary.tag.DiaryTagRepository;
 import chzzk.grassdiary.domain.diary.tag.MemberTags;
 import chzzk.grassdiary.domain.diary.tag.DiaryTag;
+import chzzk.grassdiary.web.dto.diary.CountDTO;
 import chzzk.grassdiary.web.dto.diary.DiaryDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -52,5 +53,10 @@ public class DiaryService {
                 diary.getDiaryLikes().size(),
                 diary.getCreatedAt().format(DateTimeFormatter.ofPattern("yy년 MM월 dd일")),
                 diary.getCreatedAt().format(DateTimeFormatter.ofPattern("HH:mm")));
+    }
+
+    public CountDTO countAll(Long memberId) {
+        List<Diary> allByMemberId = diaryRepository.findAllByMemberId(memberId);
+        return new CountDTO(allByMemberId.size());
     }
 }
