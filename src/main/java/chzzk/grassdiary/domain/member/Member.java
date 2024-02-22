@@ -10,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -43,4 +44,10 @@ public class Member extends BaseTimeEntity {
     private ColorCode currentColorCode;
 
     private String profileIntro;
+
+    @Builder
+    public Member(String nickname, String email) {
+        this.nickname = nickname;
+        this.email = email;
+    }
 }
