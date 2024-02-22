@@ -14,6 +14,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,5 +62,6 @@ public class Diary extends BaseTimeEntity {
         this.content = content;
         this.hasTag = hasTag;
         this.conditionLevel = conditionLevel;
+        this.setCreatedAt(LocalDateTime.now());
     }
 }
