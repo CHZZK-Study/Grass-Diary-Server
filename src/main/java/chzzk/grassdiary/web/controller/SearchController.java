@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/search")
 public class SearchController {
-    TagService tagService;
+    private final TagService tagService;
 
     /**
      * 유저의 해시태그 리스트 반환

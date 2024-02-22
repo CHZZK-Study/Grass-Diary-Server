@@ -1,5 +1,6 @@
 package chzzk.grassdiary.web.controller;
 
+import chzzk.grassdiary.service.DiaryService;
 import chzzk.grassdiary.service.MyPageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -12,8 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/grass")
 public class GrassController {
-    MyPageService myPageService;
+    private final MyPageService myPageService;
 
+    /**
+     * 사용자의 전체 잔디
+     */
     @GetMapping("{memberId}")
     public ResponseEntity<?> getGrassHistory(@PathVariable Long memberId) {
         return ResponseEntity.ok(myPageService.findGrassHistoryById(memberId));
