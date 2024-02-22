@@ -13,8 +13,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -51,4 +54,12 @@ public class Diary extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     private ConditionLevel conditionLevel;
+
+    @Builder
+    protected Diary(Member member, String content, Boolean hasTag, ConditionLevel conditionLevel) {
+        this.member = member;
+        this.content = content;
+        this.hasTag = hasTag;
+        this.conditionLevel = conditionLevel;
+    }
 }
