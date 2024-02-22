@@ -22,10 +22,10 @@ public class MainController {
     }
 
     /**
-     * 사용자의 현재까지의 잔디(일기) 개수
+     * 사용자의 현재까지의 잔디(일기) 개수, 이번달 잔디 기록
      */
-    @GetMapping("/grassCount/{memberId}")
-    public ResponseEntity<?> getGrassCount(@PathVariable Long memberId) {
-        return ResponseEntity.ok(diaryService.countAll(memberId));
+    @GetMapping("/grass/{memberId}")
+    public ResponseEntity<?> getGrassCountAndMonthGrass(@PathVariable Long memberId) {
+        return ResponseEntity.ok(diaryService.countAllAndMonthGrass(memberId));
     }
 }
