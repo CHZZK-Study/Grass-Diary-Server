@@ -11,6 +11,7 @@ import chzzk.grassdiary.domain.diary.tag.TagList;
 import chzzk.grassdiary.domain.diary.tag.TagListRepository;
 import chzzk.grassdiary.domain.member.Member;
 import chzzk.grassdiary.domain.member.MemberRepository;
+import chzzk.grassdiary.web.dto.diary.CountDTO;
 import chzzk.grassdiary.web.dto.diary.DiaryDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -92,5 +93,18 @@ class DiaryServiceTest {
         assertThat(diaryDTO.content()).isEqualTo("testContent0");
         assertThat(diaryDTO.createdDate()).isEqualTo(LocalDate.now().format(DateTimeFormatter.ofPattern("yy년 MM월 dd일")));
 
+    }
+
+    @Test
+    void countAll() {
+        // Given
+        Long memberId = members.get(0).getId();
+
+        // When
+        CountDTO countDTO = diaryService.countAll(memberId);
+
+        // Then
+        assertThat(countDTO).isNotNull();
+        assertThat(countDTO.count()).isEqualTo(1);
     }
 }
