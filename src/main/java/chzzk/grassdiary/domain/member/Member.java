@@ -35,6 +35,7 @@ public class Member extends BaseTimeEntity {
 
     private Long grassCount;
 
+    @ColumnDefault("0")
     private Integer rewardPoint;
 
     @ColumnDefault("false")
@@ -50,5 +51,6 @@ public class Member extends BaseTimeEntity {
         this.nickname = nickname;
         this.email = email;
         this.currentColorCode = currentColorCode;
+        this.rewardPoint = 0;
     }
 }
