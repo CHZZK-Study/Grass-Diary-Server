@@ -18,4 +18,12 @@ public class MemberController {
     public ResponseEntity<?> getProfileInfo(@PathVariable Long memberId) {
         return ResponseEntity.ok(myPageService.findProfileById(memberId));
     }
+
+    /**
+     * 사용자의 리워드 포인트 반환
+     */
+    @GetMapping("totalReward/{memberId}")
+    public ResponseEntity<?> getTotalReward(@PathVariable Long memberId) {
+        return ResponseEntity.ok(myPageService.findTotalRewardById(memberId));
+    }
 }
