@@ -5,7 +5,7 @@ import chzzk.grassdiary.domain.diary.Diary;
 import chzzk.grassdiary.domain.diary.DiaryRepository;
 import chzzk.grassdiary.domain.diary.tag.DiaryTagRepository;
 import chzzk.grassdiary.domain.diary.tag.MemberTags;
-import chzzk.grassdiary.domain.diary.tag.DiaryTag;
+import chzzk.grassdiary.domain.diary.tag.TagList;
 import chzzk.grassdiary.domain.member.Member;
 import chzzk.grassdiary.domain.member.MemberRepository;
 import chzzk.grassdiary.web.dto.diary.CountAndMonthGrassDTO;
@@ -48,10 +48,10 @@ public class DiaryService {
         System.out.println(diary.getContent());
 
         // 해시태그 리스트 가져오기
-        List<MemberTags> tags = diaryTagRepository.findByDiaryId(diary.getId())
-                .stream()
-                .map(DiaryTag::getMemberTags)
-                .collect(Collectors.toList());
+        List<MemberTags> diaryTags = diaryTagRepository.findMemberTagsByDiaryId(diary.getId());
+        List<TagList> tags = diaryTags.stream()
+                .map(MemberTags::getTagList)
+                .toList();
 
         return new DiaryDTO(
                 diary.getId(),
