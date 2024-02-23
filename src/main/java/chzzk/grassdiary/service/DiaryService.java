@@ -10,6 +10,7 @@ import chzzk.grassdiary.domain.member.Member;
 import chzzk.grassdiary.domain.member.MemberRepository;
 import chzzk.grassdiary.web.dto.diary.CountAndMonthGrassDTO;
 import chzzk.grassdiary.web.dto.diary.DiaryDTO;
+import chzzk.grassdiary.web.dto.diary.PopularDiaryDTO;
 import chzzk.grassdiary.web.dto.member.GrassInfoDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -76,14 +77,39 @@ public class DiaryService {
         LocalDateTime startOfDay = startOfMonth.atStartOfDay();
         LocalDateTime endOfToday = today.atTime(LocalTime.MAX);
 
-        List<Diary> thisMonthHistory = diaryRepository.findByMemberIdAndCreatedAtBetween(memberId, startOfDay, endOfToday);
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(()-> new IllegalArgumentException("존재하지 않는 멤버 입니다. (id: " + memberId + ")"));
+
+        List<Diary> thisMonthHistory = diaryRepository.findByMemberIdAndCreatedAtBetween(memberId, startOfDay, endOfToday);
         ColorCode colorCode = member.getCurrentColorCode();
 
         return new CountAndMonthGrassDTO(
                 allByMemberId.size(),
                 new GrassInfoDTO(thisMonthHistory, colorCode.getRgb())
         );
+    }
+
+    /**
+     * 대표 일기(오늘의 좋아요 가장 많은 받은 일기 10개)
+     */
+    @Transactional(readOnly = true)
+    public List<PopularDiaryDTO> popularDiary(Long memberId) {
+        LocalDate today = LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonth(), LocalDate.now().getDayOfMonth());
+
+        List<Diary> popularDiaries = diaryRepository
+                .findTop10ByIsPrivateFalseAndCreatedAtBetweenOrderByDiaryLikesDesc(today.atStartOfDay(), today.atTime(LocalTime.MAX));
+
+        if (popularDiaries.isEmpty()) {
+            // TODO: 오늘의 일기 없음
+            return null;
+        }
+
+        return popularDiaries.stream()
+                .map(diary -> new PopularDiaryDTO(
+                        diary.getId(),
+                        diary.getContent(),
+                        diary.getDiaryLikes().stream()
+                                .anyMatch(diaryLike -> diaryLike.getMember().getId().equals(memberId))
+                )).collect(Collectors.toList());
     }
 }

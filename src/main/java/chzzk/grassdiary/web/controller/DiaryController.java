@@ -23,4 +23,13 @@ public class DiaryController {
     public ResponseEntity<?> searchByDate(@PathVariable Long memberId, @RequestParam String date) {
         return ResponseEntity.ok(diaryService.findByDate(memberId, date));
     }
+
+    /**
+     * 대표 일기(오늘의 좋아요 가장 많은 받은 일기 10개)
+     * memberId: 해당 일기에 대한 작성자의 좋아요 유무를 판단하기 위해 필요
+     */
+    @GetMapping("/popularity/{memberId}")
+    public ResponseEntity<?> todayPopularDiary(@PathVariable Long memberId) {
+        return ResponseEntity.ok(diaryService.popularDiary(memberId));
+    }
 }
