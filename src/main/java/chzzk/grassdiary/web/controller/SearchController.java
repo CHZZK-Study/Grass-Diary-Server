@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -27,4 +28,8 @@ public class SearchController {
     /**
      * 유저가 해시태그를 선택하면 그에 대한 다이어리 반환
      */
+    @GetMapping("tagId/{memberId}")
+    public ResponseEntity<?> findByHashTagId(@PathVariable Long memberId, @RequestParam Long tagId) {
+        return ResponseEntity.ok(tagService.findByHashTagId(memberId, tagId));
+    }
 }
