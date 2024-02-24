@@ -14,11 +14,8 @@ public class GoogleOAuthProperties {
     @Value("${oauth2.client.registration.google.client-secret}")
     private String clientSecret;
 
-    @Value("${oauth2.client.registration.google.signin-redirect-uri}")
-    private String signInRedirectUri;
-
-    @Value("${oauth2.client.registration.google.signup-redirect-uri}")
-    private String signUpRedirectUri;
+    @Value("${oauth2.client.registration.google.redirect-uri}")
+    private String redirectUri;
 
     @Value("${oauth2.client.registration.google.authorization-grant-type}")
     private String responseType;

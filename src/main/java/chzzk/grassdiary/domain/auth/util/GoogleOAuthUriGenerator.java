@@ -14,24 +14,12 @@ public class GoogleOAuthUriGenerator implements OAuthUriGenerator {
      * @return Google 인증서버에 대한 인가코드 요청 URI
      */
     @Override
-    public String generateSignUpUrl() {
+    public String generateUrl() {
         return String.format(
                 "%s?client_id=%s&redirect_uri=%s&response_type=%s&scope=%s",
                 googleOAuthProperties.getAuthorizationUri(),
                 googleOAuthProperties.getClientId(),
-                googleOAuthProperties.getSignUpRedirectUri(),
-                googleOAuthProperties.getResponseType(),
-                googleOAuthProperties.getScope()
-        );
-    }
-
-    @Override
-    public String generateSignInUrl() {
-        return String.format(
-                "%s?client_id=%s&redirect_uri=%s&response_type=%s&scope=%s",
-                googleOAuthProperties.getAuthorizationUri(),
-                googleOAuthProperties.getClientId(),
-                googleOAuthProperties.getSignInRedirectUri(),
+                googleOAuthProperties.getRedirectUri(),
                 googleOAuthProperties.getResponseType(),
                 googleOAuthProperties.getScope()
         );
