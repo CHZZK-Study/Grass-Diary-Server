@@ -16,18 +16,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtTokenProvider {
     @Value("${jwt.access.secret-key}")
-    private String jwtAccessTokenSecretKey; // JWT signature를 생성할 때, 사용되는 secretKey
+    private String jwtAccessTokenSecretKey;
 
     @Value("${jwt.access.expiration}")
-    private long jwtAccessTokenExpiration; // 액세스 토큰의 만료 시간
+    private long jwtAccessTokenExpiration;
 
-    /**
-     * 액세스 토큰 생성
-     *
-     * @param email
-     * @return
-     */
-    public String generateAccessToken(String email) {
+    public String generateAccessTokenById(String socialId) {
         long currentDateTime = new Date().getTime();
         Date expiryDate = new Date(currentDateTime + jwtAccessTokenExpiration);
         SecretKeySpec secretKey = new SecretKeySpec(
@@ -35,7 +29,7 @@ public class JwtTokenProvider {
                 SignatureAlgorithm.HS256.getJcaName());
 
         return Jwts.builder()
-                .claim("email", email)
+                .claim("id", socialId)
                 .setExpiration(expiryDate)
                 .signWith(secretKey)
                 .compact();
