@@ -10,8 +10,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
@@ -28,19 +26,13 @@ import org.hibernate.annotations.ColumnDefault;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Entity
-@Table(uniqueConstraints = {
-        @UniqueConstraint(
-                name = "NICKNAME_EMAIL_UNIQUE",
-                columnNames = {"nickname", "email"}
-        )}
-) // 닉네임, 이메일 중복 금지
 public class Member extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "given_name", unique = true)
     @Size(min = 1, max = 20)
     private String nickname;  // auth
 
@@ -49,7 +41,7 @@ public class Member extends BaseTimeEntity {
     private String email; // auth
 
     @Lob
-    private String profileImageUrl; // auth
+    private String picture; // auth
 
     private Long grassCount;
 

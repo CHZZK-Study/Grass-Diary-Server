@@ -1,20 +1,21 @@
 package chzzk.grassdiary.domain.auth.service.dto;
 
-import chzzk.grassdiary.domain.member.Member;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * 구글 서버로부터 받은 사용자 정보
  */
+//@JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public record GoogleUserInfo(
+        String id,
+
+        @JsonProperty("email")
         String email,
-        String displayName,
-        String imageUrl
+
+        @JsonProperty("given_name")
+        String nickname,
+
+        @JsonProperty("picture")
+        String picture
 ) {
-    public Member toMember() {
-        return Member.builder()
-                .email(email)
-                .nickname(displayName)
-                .profileImageUrl(imageUrl)
-                .build();
-    }
 }
