@@ -1,20 +1,26 @@
 package chzzk.grassdiary.domain.auth.controller;
 
 import chzzk.grassdiary.domain.auth.service.OAuthService;
+import chzzk.grassdiary.domain.auth.service.dto.JWTTokenResponse;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class OAuthController {
     private final OAuthService oAuthService;
+
+    @Value("${client.login-success-redirect-uri}")
+    private String loginSuccessUri;
 
     @GetMapping("/google")
     public void loginGoogle(HttpServletResponse response) throws IOException {
@@ -23,10 +29,14 @@ public class OAuthController {
     }
 
     @GetMapping("/code/google")
-    public ResponseEntity<String> authorizeUser(
-            @RequestParam("code") String code,
-            HttpServletResponse response) {
+    public void authorizeUser(@RequestParam("code") String code, HttpServletResponse response) throws IOException {
+        JWTTokenResponse jwtToken = oAuthService.signUpGoogle(code);
+        String redirectUriWithJwt = generateRedirectUri(jwtToken.accessToken());
+        log.info("jwt 토큰이 담긴 uri = {}", redirectUriWithJwt);
+        response.sendRedirect(redirectUriWithJwt);
+    }
 
-        return ResponseEntity.ok("callback!!!");
+    private String generateRedirectUri(String accessToken) {
+        return String.format("%s?accessToken=%s", loginSuccessUri, accessToken);
     }
 }
