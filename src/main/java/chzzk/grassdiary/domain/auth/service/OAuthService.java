@@ -28,16 +28,16 @@ public class OAuthService {
         return googleOAuthUriGenerator.generateUrl();
     }
 
-    public JWTTokenResponse signUpGoogle(String code) {
+    public JWTTokenResponse loginGoogle(String code) {
         GoogleOAuthToken googleAccessToken = googleOAuthClient.getGoogleAccessToken(code);
 
         GoogleUserInfo googleUserInfo = googleOAuthClient.getGoogleUserInfo(googleAccessToken.accessToken());
 
         Member member = createMemberIfNotExist(googleUserInfo);
 
-        String accessToken = jwtTokenProvider.generateAccessTokenById(googleUserInfo.id());
-        log.info("토큰 생성 완료 - 구글로부터 받은 사용자 id: {}", googleUserInfo.id());
-        log.info("토큰 생성 완료 - repository에 저장된 사용자 id: {}", member.getEmail());
+        String accessToken = jwtTokenProvider.generateAccessTokenById(googleUserInfo.email());
+        log.info("[토큰 생성 완료] - 구글로부터 받은 사용자 email: {}", googleUserInfo.email());
+        log.info("[토큰 생성 완료] - repository에 저장된 사용자 email: {}", member.getEmail());
 
         return new JWTTokenResponse(accessToken);
     }

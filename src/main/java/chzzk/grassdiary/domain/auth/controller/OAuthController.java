@@ -30,9 +30,9 @@ public class OAuthController {
 
     @GetMapping("/code/google")
     public void authorizeUser(@RequestParam("code") String code, HttpServletResponse response) throws IOException {
-        JWTTokenResponse jwtToken = oAuthService.signUpGoogle(code);
+        JWTTokenResponse jwtToken = oAuthService.loginGoogle(code);
         String redirectUriWithJwt = generateRedirectUri(jwtToken.accessToken());
-        log.info("jwt 토큰이 담긴 uri = {}", redirectUriWithJwt);
+        log.info("jwt 토큰이 담긴 url = {}", redirectUriWithJwt);
         response.sendRedirect(redirectUriWithJwt);
     }
 
