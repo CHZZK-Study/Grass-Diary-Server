@@ -2,6 +2,9 @@ package chzzk.grassdiary.web.controller;
 
 import chzzk.grassdiary.service.DiaryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +17,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/diary")
 public class DiaryController {
     private final DiaryService diaryService;
+
+    /**
+     * 유저별 일기장 메인 페이지
+     * 1) 디폴트 API(최신순 5개씩)
+     *  : api/diary/main/1?page=0
+     * 2) 오래된 순 5개씩
+     *  : api/diary/main/1?page=0&sort=createdAt,ASC
+     */
+    @GetMapping("/main/{memberId}")
+    public ResponseEntity<?> findAll(
+            @PageableDefault(size = 5, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
+            @PathVariable Long memberId
+    ) {
+        return ResponseEntity.ok(diaryService.findAll(pageable, memberId));
+    }
 
     /**
      * 유저별 날짜에 따른 일기 검색(잔디 클릭시 사용)

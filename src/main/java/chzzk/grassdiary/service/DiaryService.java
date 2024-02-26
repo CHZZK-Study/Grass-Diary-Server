@@ -13,6 +13,8 @@ import chzzk.grassdiary.web.dto.diary.DiaryDTO;
 import chzzk.grassdiary.web.dto.diary.PopularDiaryDTO;
 import chzzk.grassdiary.web.dto.member.GrassInfoDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +31,21 @@ public class DiaryService {
     private final DiaryRepository diaryRepository;
     private final DiaryTagRepository diaryTagRepository;
     private final MemberRepository memberRepository;
+
+    @Transactional(readOnly = true)
+    public Page<DiaryDTO> findAll(Pageable pageable, Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(()-> new IllegalArgumentException("존재하지 않는 멤버 입니다. (id: " + memberId + ")"));
+
+        return diaryRepository.findDiaryByMemberId(memberId, pageable)
+                .map(diary -> {
+                    List<MemberTags> diaryTags = diaryTagRepository.findMemberTagsByDiaryId(diary.getId());
+                    List<TagList> tags = diaryTags.stream()
+                            .map(MemberTags::getTagList)
+                            .toList();
+                    return DiaryDTO.from(diary, tags);
+                });
+    }
 
     @Transactional(readOnly = true)
     public DiaryDTO findByDate(Long id, String date) {
