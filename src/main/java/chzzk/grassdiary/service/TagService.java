@@ -11,7 +11,6 @@ import chzzk.grassdiary.web.dto.diary.TagDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,21 +46,8 @@ public class TagService {
                     List<TagList> tags = diaryTags.stream()
                             .map(MemberTags::getTagList)
                             .toList();
-                    return convertDiaryDTO(diary, tags);
+                    return DiaryDTO.from(diary, tags);
                 })
                 .collect(Collectors.toList());
-    }
-
-    private DiaryDTO convertDiaryDTO(Diary diary, List<TagList> tags) {
-        return new DiaryDTO(
-                diary.getId(),
-                diary.getContent(),
-                tags,
-                diary.getConditionLevel().getTransparency(),
-                diary.getIsPrivate(),
-                diary.getDiaryLikes().size(),
-                diary.getCreatedAt().format(DateTimeFormatter.ofPattern("yy년 MM월 dd일")),
-                diary.getCreatedAt().format(DateTimeFormatter.ofPattern("HH:mm"))
-        );
     }
 }
