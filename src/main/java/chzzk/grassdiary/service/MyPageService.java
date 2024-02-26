@@ -30,7 +30,7 @@ public class MyPageService {
 
     @Transactional(readOnly = true)
     public GrassInfoDTO findGrassHistoryById(Long memberId) {
-        List<Diary> diaryHistory = diaryRepository.findDiaryByIdOrderByCreatedAtDesc(memberId);
+        List<Diary> diaryHistory = diaryRepository.findAllByMemberIdOrderByCreatedAt(memberId);
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(()-> new IllegalArgumentException("존재하지 않는 멤버 입니다. (id: " + memberId + ")"));
         ColorCode colorCode = member.getCurrentColorCode();

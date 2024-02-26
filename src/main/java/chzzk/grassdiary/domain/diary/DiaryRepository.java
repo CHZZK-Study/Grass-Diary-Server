@@ -11,7 +11,7 @@ import java.util.List;
 public interface DiaryRepository extends JpaRepository<Diary, Long> {
     Page<Diary> findDiaryByMemberId(Long memberId, Pageable pageable);
 
-    List<Diary> findDiaryByIdOrderByCreatedAtDesc(Long memberId);
+    List<Diary> findAllByMemberIdOrderByCreatedAt(Long memberId);
 
     @Query("SELECT d FROM Diary d WHERE d.member.id = :memberId AND " +
             "d.createdAt >= :startOfDay AND d.createdAt <= :endOfDay")
