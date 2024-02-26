@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * 구글 서버로부터 받은 사용자 정보
  */
-//@JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public record GoogleUserInfo(
         String id,
 
