@@ -58,4 +58,53 @@ public class DiaryServiceTest {
         Assertions.assertThat(diaryRepository.findById(1L).get().getContent()).isEqualTo(expectedContent);
     }
 
+    @Test
+    public void 글_수정() {
+        String expectedContent = "update diary content";
+
+        ColorCode colorCode = ColorCode.builder()
+                .colorName("GREEN")
+                .rgb("000,000,000")
+                .build();
+        Member member = Member.builder()
+                .id(1L)
+                .nickname("testNickName")
+                .email("testEmail@test.com")
+                .currentColorCode(colorCode)
+                .build();
+        DiaryDto.Request requestDto = DiaryDto.Request.builder()
+                .id(1L)
+                .member(member)
+                .content("diary content")
+                .isPrivate(true)
+                .hasImage(false)
+                .conditionLevel(ConditionLevel.LEVEL_10)
+                .build();
+
+        colorCodeRepository.save(colorCode);
+        memberRepository.save(member);
+        diaryService.save(requestDto);
+
+        DiaryDto.Request updateRequestDto = DiaryDto.Request.builder()
+                .id(1L)
+                .member(member)
+                .content(expectedContent)
+                .isPrivate(true)
+                .hasImage(false)
+                .conditionLevel(ConditionLevel.LEVEL_9)
+                .build();
+
+        Long id = diaryService.update(1L, updateRequestDto);
+
+
+        Assertions.assertThat(diaryRepository.findById(id).get().getMember().getNickname()).isEqualTo("testNickName");
+
+        Assertions.assertThat(diaryRepository.findById(id).get().getContent()).isEqualTo(expectedContent);
+
+
+
+
+
+    }
+
 }
