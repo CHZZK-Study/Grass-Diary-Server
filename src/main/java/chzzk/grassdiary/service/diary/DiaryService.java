@@ -6,13 +6,12 @@ import chzzk.grassdiary.domain.diary.DiaryLikeRepository;
 import chzzk.grassdiary.domain.diary.DiaryRepository;
 import chzzk.grassdiary.domain.member.MemberRepository;
 import chzzk.grassdiary.web.dto.diary.DiaryDto;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional  // @Transactional을 클래스 단위로 하는 것과 메서드 단위로 하는 것 공부
 public class DiaryService {
 
     private final DiaryRepository diaryRepository;
@@ -45,7 +44,7 @@ public class DiaryService {
         diaryRepository.delete(diary);
     }
 
-    @Transactional()
+    @Transactional(readOnly = true)
     public DiaryDto.Response findById(Long id) {
         Diary diary = diaryRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 일기가 존재하지 않습니다. id = " + id));

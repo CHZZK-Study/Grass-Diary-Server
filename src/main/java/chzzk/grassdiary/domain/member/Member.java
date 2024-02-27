@@ -47,8 +47,7 @@ public class Member extends BaseTimeEntity {
     private String profileIntro;
 
     @Builder
-    public Member(Long id, String nickname, String email, ColorCode currentColorCode) {
-        this.id = id;
+    public Member(String nickname, String email, ColorCode currentColorCode) {
         this.nickname = nickname;
         this.email = email;
         this.currentColorCode = currentColorCode;
