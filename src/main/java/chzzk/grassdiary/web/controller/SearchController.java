@@ -1,6 +1,6 @@
 package chzzk.grassdiary.web.controller;
 
-import chzzk.grassdiary.service.TagService;
+import chzzk.grassdiary.service.diary.TagService;
 import chzzk.grassdiary.web.dto.diary.DiaryDTO;
 import chzzk.grassdiary.web.dto.diary.TagDTO;
 import io.swagger.v3.oas.annotations.Operation;
