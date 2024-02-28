@@ -5,7 +5,8 @@ import chzzk.grassdiary.domain.diary.DiaryImageRepository;
 import chzzk.grassdiary.domain.diary.DiaryLikeRepository;
 import chzzk.grassdiary.domain.diary.DiaryRepository;
 import chzzk.grassdiary.domain.member.MemberRepository;
-import chzzk.grassdiary.web.dto.diary.DiaryDto;
+import chzzk.grassdiary.web.dto.diary.DiarySaveDTO;
+import chzzk.grassdiary.web.dto.diary.DiaryUpdateDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,12 +22,12 @@ public class DiaryService {
 
     // CREATE 일기 저장 후 id 반환(Redirect를 위해?)
     @Transactional
-    public Long save(DiaryDto.Request requestDto) {
+    public Long save(DiarySaveDTO.Request requestDto) {
         return diaryRepository.save(requestDto.toEntity()).getId();
     }
 
     @Transactional
-    public Long update(Long id, DiaryDto.Request requestDto) {
+    public Long update(Long id, DiaryUpdateDTO.Request requestDto) {
         Diary diary = diaryRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 일기가 존재하지 않습니다. id = " + id));
 
@@ -45,11 +46,11 @@ public class DiaryService {
     }
 
     @Transactional(readOnly = true)
-    public DiaryDto.Response findById(Long id) {
+    public DiarySaveDTO.Response findById(Long id) {
         Diary diary = diaryRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 일기가 존재하지 않습니다. id = " + id));
         //조회한 결과를 담은 DTO 객체를 생성해서 반환
-        return new DiaryDto.Response(diary);
+        return new DiarySaveDTO.Response(diary);
     }
 
 

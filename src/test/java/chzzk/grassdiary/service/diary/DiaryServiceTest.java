@@ -6,13 +6,13 @@ import chzzk.grassdiary.domain.color.ConditionLevel;
 import chzzk.grassdiary.domain.diary.DiaryRepository;
 import chzzk.grassdiary.domain.member.Member;
 import chzzk.grassdiary.domain.member.MemberRepository;
-import chzzk.grassdiary.web.dto.diary.DiaryDto;
+import chzzk.grassdiary.web.dto.diary.DiarySaveDTO;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
+  
 @SpringBootTest
 public class DiaryServiceTest {
 
@@ -46,7 +46,7 @@ public class DiaryServiceTest {
                 .email("testEmail@test.com")
                 .currentColorCode(colorCode)
                 .build();
-        DiaryDto.Request requestDto = DiaryDto.Request.builder()
+        DiarySaveDTO.Request requestDto = DiarySaveDTO.Request.builder()
                 .member(member)
                 .content(expectedContent)
                 .isPrivate(true)

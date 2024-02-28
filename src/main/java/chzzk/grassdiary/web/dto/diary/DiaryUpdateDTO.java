@@ -8,8 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-public class DiaryDto {
-
+public class DiaryUpdateDTO {
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
@@ -40,7 +39,6 @@ public class DiaryDto {
 
     @Getter
     public static class Response {
-
         private final Long id;
         private final Long memberId;
         private final String content;
