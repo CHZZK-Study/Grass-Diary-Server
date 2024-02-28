@@ -4,7 +4,6 @@ import chzzk.grassdiary.service.DiaryService;
 import chzzk.grassdiary.service.MainService;
 import chzzk.grassdiary.web.dto.diary.CountAndMonthGrassDTO;
 import chzzk.grassdiary.web.dto.main.TodayInfoDTO;
-import chzzk.grassdiary.web.dto.member.GrassInfoDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;

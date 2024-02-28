@@ -22,9 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class GrassController {
     private final MyPageService myPageService;
 
-    /**
-     * 사용자의 전체 잔디
-     */
     @GetMapping("{memberId}")
     @Operation(
             summary = "사용자 전체 잔디 불러오기",

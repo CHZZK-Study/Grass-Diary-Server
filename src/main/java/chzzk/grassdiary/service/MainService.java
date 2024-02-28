@@ -1,11 +1,10 @@
 package chzzk.grassdiary.service;
 
 import chzzk.grassdiary.web.dto.main.TodayInfoDTO;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service

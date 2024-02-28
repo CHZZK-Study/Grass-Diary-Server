@@ -29,17 +29,15 @@ public class DiaryController {
     private final DiaryService diaryService;
 
     /**
-     * 유저별 일기장 메인 페이지
-     * 1) 디폴트 API(최신순 5개씩)
-     *  : api/diary/main/1?page=0
-     * 2) 오래된 순 5개씩
-     *  : api/diary/main/1?page=0&sort=createdAt,ASC
+     * 유저별 일기장 메인 페이지 1) 디폴트 API(최신순 5개씩) : api/diary/main/1?page=0 2) 오래된 순 5개씩 :
+     * api/diary/main/1?page=0&sort=createdAt,ASC
      */
     @GetMapping("/main/{memberId}")
     @Operation(
             summary = "유저별 일기장 메인 페이지",
-            description = "최신순 5개씩(`api/diary/main/{memberId}?page=0`), 오래된 순 5개씩(`api/diary/main/1?page=0&sort=createdAt,ASC`) " +
-                    "\n페이지를 나타내는 변수가 있는데, 해당 표에는 바로 나타나지 않으니 실행 시켜보시는 것을 추천드립니다.")
+            description =
+                    "최신순 5개씩(`api/diary/main/{memberId}?page=0`), 오래된 순 5개씩(`api/diary/main/1?page=0&sort=createdAt,ASC`) "
+                            + "\n페이지를 나타내는 변수가 있는데, 해당 표에는 바로 나타나지 않으니 실행 시켜보시는 것을 추천드립니다.")
     @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = DiaryDTO.class)))
     public ResponseEntity<?> findAll(
             @PageableDefault(size = 5, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
@@ -48,10 +46,6 @@ public class DiaryController {
         return ResponseEntity.ok(diaryService.findAll(pageable, memberId));
     }
 
-    /**
-     * 유저별 날짜에 따른 일기 검색(잔디 클릭시 사용)
-     * API 형식: api/diary/1?date=2024-02-21
-     */
     @GetMapping("/{memberId}")
     @Operation(
             summary = "날짜별 일기 검색",
@@ -65,10 +59,6 @@ public class DiaryController {
         return ResponseEntity.ok(diaryService.findByDate(memberId, date));
     }
 
-    /**
-     * 대표 일기(오늘의 좋아요 가장 많은 받은 일기 10개)
-     * memberId: 해당 일기에 대한 작성자의 좋아요 유무를 판단하기 위해 필요
-     */
     @GetMapping("/popularity/{memberId}")
     @Operation(
             summary = "대표 일기",

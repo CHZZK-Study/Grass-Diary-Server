@@ -1,5 +1,7 @@
 package chzzk.grassdiary.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import chzzk.grassdiary.domain.color.ColorCode;
 import chzzk.grassdiary.domain.color.ColorCodeRepository;
 import chzzk.grassdiary.domain.color.ConditionLevel;
@@ -12,18 +14,15 @@ import chzzk.grassdiary.domain.member.Member;
 import chzzk.grassdiary.domain.member.MemberRepository;
 import chzzk.grassdiary.web.dto.diary.CountAndMonthGrassDTO;
 import chzzk.grassdiary.web.dto.diary.DiaryDTO;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 class DiaryServiceTest {
@@ -52,9 +51,9 @@ class DiaryServiceTest {
         // 컬러코드 값 넣기
         colorCodes = new ArrayList<>();
         colorCodes.add(ColorCode.builder()
-                        .colorName("GREEN")
-                        .rgb("000,000,000")
-                        .build());
+                .colorName("GREEN")
+                .rgb("000,000,000")
+                .build());
         colorCodes = colorCodeRepository.saveAll(colorCodes);
 
         // 멤버 3명 만들기
@@ -72,7 +71,7 @@ class DiaryServiceTest {
         diaries = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             diaries.add(Diary.builder()
-                    .member(members.get(i%3))
+                    .member(members.get(i % 3))
                     .content("testContent" + i)
                     .hasTag(false)
                     .conditionLevel(ConditionLevel.LEVEL_5)
@@ -93,7 +92,8 @@ class DiaryServiceTest {
         // Then
         assertThat(diaryDTO).isNotNull();
         assertThat(diaryDTO.content()).isEqualTo("testContent0");
-        assertThat(diaryDTO.createdDate()).isEqualTo(LocalDate.now().format(DateTimeFormatter.ofPattern("yy년 MM월 dd일")));
+        assertThat(diaryDTO.createdDate()).isEqualTo(
+                LocalDate.now().format(DateTimeFormatter.ofPattern("yy년 MM월 dd일")));
 
     }
 

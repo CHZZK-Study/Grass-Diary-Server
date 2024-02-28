@@ -1,10 +1,9 @@
 package chzzk.grassdiary.domain.diary.tag;
 
 import chzzk.grassdiary.domain.diary.Diary;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-
-import java.util.List;
 
 public interface DiaryTagRepository extends JpaRepository<DiaryTag, Long> {
     @Query("SELECT dt.diary FROM DiaryTag dt " +

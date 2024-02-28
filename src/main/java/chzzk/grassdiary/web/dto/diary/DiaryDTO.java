@@ -2,11 +2,10 @@ package chzzk.grassdiary.web.dto.diary;
 
 import chzzk.grassdiary.domain.diary.Diary;
 import chzzk.grassdiary.domain.diary.tag.TagList;
-
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-public record DiaryDTO (
+public record DiaryDTO(
         Long diaryId,
         String content,
         List<TagList> tags,

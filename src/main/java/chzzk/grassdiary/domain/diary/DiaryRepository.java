@@ -1,12 +1,11 @@
 package chzzk.grassdiary.domain.diary;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 public interface DiaryRepository extends JpaRepository<Diary, Long> {
     Page<Diary> findDiaryByMemberId(Long memberId, Pageable pageable);
@@ -19,6 +18,7 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
 
     List<Diary> findAllByMemberId(Long memberId);
 
-    List<Diary> findTop10ByIsPrivateFalseAndCreatedAtBetweenOrderByDiaryLikesDesc(LocalDateTime startOfDay, LocalDateTime endOfDay);
+    List<Diary> findTop10ByIsPrivateFalseAndCreatedAtBetweenOrderByDiaryLikesDesc(LocalDateTime startOfDay,
+                                                                                  LocalDateTime endOfDay);
 
 }

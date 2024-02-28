@@ -1,9 +1,10 @@
 package chzzk.grassdiary.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import chzzk.grassdiary.domain.color.ConditionLevel;
 import chzzk.grassdiary.domain.diary.Diary;
 import chzzk.grassdiary.domain.diary.DiaryRepository;
-import chzzk.grassdiary.domain.diary.tag.DiaryTag;
 import chzzk.grassdiary.domain.diary.tag.MemberTags;
 import chzzk.grassdiary.domain.diary.tag.MemberTagsRepository;
 import chzzk.grassdiary.domain.diary.tag.TagList;
@@ -11,16 +12,13 @@ import chzzk.grassdiary.domain.diary.tag.TagListRepository;
 import chzzk.grassdiary.domain.member.Member;
 import chzzk.grassdiary.domain.member.MemberRepository;
 import chzzk.grassdiary.web.dto.diary.TagDTO;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 class TagServiceTest {
@@ -49,9 +47,9 @@ class TagServiceTest {
         members = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             members.add(Member.builder()
-                            .nickname("testMember" + i)
-                            .email("member" + i + "@test.com")
-                            .build());
+                    .nickname("testMember" + i)
+                    .email("member" + i + "@test.com")
+                    .build());
         }
         members = memberRepository.saveAll(members);
 
@@ -59,10 +57,10 @@ class TagServiceTest {
         diaries = new ArrayList<>();
         for (int i = 0; i < 15; i++) {
             diaries.add(Diary.builder()
-                            .member(members.get(i%3))
-                            .content("testContent" + i)
-                            .hasTag(true)
-                            .conditionLevel(ConditionLevel.LEVEL_5)
+                    .member(members.get(i % 3))
+                    .content("testContent" + i)
+                    .hasTag(true)
+                    .conditionLevel(ConditionLevel.LEVEL_5)
                     .build());
         }
         diaries = diaryRepository.saveAll(diaries);
@@ -97,8 +95,8 @@ class TagServiceTest {
         // Then
         System.out.println("SIZE: " + dto.size());
         for (int i = 0; i < dto.size(); i++) {
-            System.out.println("tagId: "+dto.get(i).tagId());
-            System.out.println("tag: "+dto.get(i).tag());
+            System.out.println("tagId: " + dto.get(i).tagId());
+            System.out.println("tag: " + dto.get(i).tag());
         }
         assertThat(dto.size()).isEqualTo(3);
     }

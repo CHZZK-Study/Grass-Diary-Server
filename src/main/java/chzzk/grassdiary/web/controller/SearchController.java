@@ -25,9 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class SearchController {
     private final TagService tagService;
 
-    /**
-     * 유저의 해시태그 리스트 반환
-     */
     @GetMapping("hashTag/{memberId}")
     @Operation(
             summary = "유저가 사용한 해시태그 리스트",
@@ -38,9 +35,6 @@ public class SearchController {
         return ResponseEntity.ok(tagService.getMemberTags(memberId));
     }
 
-    /**
-     * 유저가 해시태그를 선택하면 그에 대한 다이어리 반환
-     */
     @GetMapping("tagId/{memberId}")
     @Operation(
             summary = "해시태그에 대한 다이어리 검색",

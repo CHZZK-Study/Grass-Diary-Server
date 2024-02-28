@@ -1,11 +1,10 @@
 package chzzk.grassdiary.web.dto.member;
 
 import chzzk.grassdiary.domain.diary.Diary;
-import lombok.Getter;
-
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.Getter;
 
 @Getter
 public class GrassInfoDTO {

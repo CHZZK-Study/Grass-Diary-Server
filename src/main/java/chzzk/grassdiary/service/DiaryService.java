@@ -12,18 +12,17 @@ import chzzk.grassdiary.web.dto.diary.CountAndMonthGrassDTO;
 import chzzk.grassdiary.web.dto.diary.DiaryDTO;
 import chzzk.grassdiary.web.dto.diary.PopularDiaryDTO;
 import chzzk.grassdiary.web.dto.member.GrassInfoDTO;
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -35,7 +34,7 @@ public class DiaryService {
     @Transactional(readOnly = true)
     public Page<DiaryDTO> findAll(Pageable pageable, Long memberId) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(()-> new IllegalArgumentException("존재하지 않는 멤버 입니다. (id: " + memberId + ")"));
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 멤버 입니다. (id: " + memberId + ")"));
 
         return diaryRepository.findDiaryByMemberId(memberId, pageable)
                 .map(diary -> {
@@ -82,22 +81,23 @@ public class DiaryService {
     }
 
     /**
-     * 유저의 총 잔디 개수(count)
-     * 유저의 이번 달 잔디 정보(grassInfoDTO<grassList, colorRGB>)
+     * 유저의 총 잔디 개수(count) 유저의 이번 달 잔디 정보(grassInfoDTO<grassList>, colorRGB>)
      */
     @Transactional(readOnly = true)
     public CountAndMonthGrassDTO countAllAndMonthGrass(Long memberId) {
         List<Diary> allByMemberId = diaryRepository.findAllByMemberId(memberId);
 
         LocalDate startOfMonth = LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonth(), 1);
-        LocalDate today = LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonth(), LocalDate.now().getDayOfMonth());
+        LocalDate today = LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonth(),
+                LocalDate.now().getDayOfMonth());
         LocalDateTime startOfDay = startOfMonth.atStartOfDay();
         LocalDateTime endOfToday = today.atTime(LocalTime.MAX);
 
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(()-> new IllegalArgumentException("존재하지 않는 멤버 입니다. (id: " + memberId + ")"));
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 멤버 입니다. (id: " + memberId + ")"));
 
-        List<Diary> thisMonthHistory = diaryRepository.findByMemberIdAndCreatedAtBetween(memberId, startOfDay, endOfToday);
+        List<Diary> thisMonthHistory = diaryRepository.findByMemberIdAndCreatedAtBetween(memberId, startOfDay,
+                endOfToday);
         ColorCode colorCode = member.getCurrentColorCode();
 
         return new CountAndMonthGrassDTO(
@@ -111,10 +111,12 @@ public class DiaryService {
      */
     @Transactional(readOnly = true)
     public List<PopularDiaryDTO> popularDiary(Long memberId) {
-        LocalDate today = LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonth(), LocalDate.now().getDayOfMonth());
+        LocalDate today = LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonth(),
+                LocalDate.now().getDayOfMonth());
 
         List<Diary> popularDiaries = diaryRepository
-                .findTop10ByIsPrivateFalseAndCreatedAtBetweenOrderByDiaryLikesDesc(today.atStartOfDay(), today.atTime(LocalTime.MAX));
+                .findTop10ByIsPrivateFalseAndCreatedAtBetweenOrderByDiaryLikesDesc(today.atStartOfDay(),
+                        today.atTime(LocalTime.MAX));
 
         if (popularDiaries.isEmpty()) {
             // TODO: 오늘의 일기 없음
