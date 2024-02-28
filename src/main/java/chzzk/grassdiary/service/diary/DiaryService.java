@@ -40,8 +40,11 @@ public class DiaryService {
 
     // CREATE 일기 저장 후 id 반환(Redirect를 위해?)
     @Transactional
-    public Long save(DiarySaveDTO.Request requestDto) {
-        return diaryRepository.save(requestDto.toEntity()).getId();
+    public Long save(Long id, DiarySaveDTO.Request requestDto) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다. id = " + id));
+
+        return diaryRepository.save(requestDto.toEntity(member)).getId();
     }
 
     @Transactional
