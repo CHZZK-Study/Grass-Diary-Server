@@ -1,18 +1,15 @@
 package chzzk.grassdiary.web.dto.diary;
 
-import chzzk.grassdiary.domain.color.ConditionLevel;
 import chzzk.grassdiary.domain.diary.Diary;
 import chzzk.grassdiary.domain.diary.DiaryLike;
 import chzzk.grassdiary.domain.member.Member;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-public class DiaryLikeDto {
+public class DiaryLikeDTO {
 
     @Data
     @AllArgsConstructor
