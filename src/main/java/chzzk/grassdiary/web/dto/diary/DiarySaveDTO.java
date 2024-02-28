@@ -24,8 +24,8 @@ public class DiarySaveDTO {
         private ConditionLevel conditionLevel;
 
         // DTO -> Entity
-        public Diary toEntity() {
-            Diary diary = Diary.builder()
+        public Diary toEntity(Member member) {
+            return Diary.builder()
                     .member(member)
                     .content(content)
                     .isPrivate(isPrivate)
@@ -33,8 +33,6 @@ public class DiarySaveDTO {
                     .hasTag(hasTag)
                     .conditionLevel(conditionLevel)
                     .build();
-
-            return diary;
         }
     }
 

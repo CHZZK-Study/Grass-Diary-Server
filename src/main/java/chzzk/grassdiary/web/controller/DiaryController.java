@@ -35,9 +35,9 @@ public class DiaryController {
     /**
      * CRUD
      */
-    @PostMapping
-    public Long save(@RequestBody DiarySaveDTO.Request requestDto) {
-        return diaryService.save(requestDto);
+    @PostMapping("/{id}")
+    public Long save(@PathVariable(name = "id") Long id, @RequestBody DiarySaveDTO.Request requestDto) {
+        return diaryService.save(id, requestDto);
     }
 
     @PatchMapping("/{id}")
