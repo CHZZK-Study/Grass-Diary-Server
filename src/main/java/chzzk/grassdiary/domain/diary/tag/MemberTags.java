@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -27,4 +28,10 @@ public class MemberTags {
     @ManyToOne
     @JoinColumn(name = "tag_id")
     private TagList tagList;
+
+    @Builder
+    public MemberTags(Member member, TagList tagList) {
+        this.member = member;
+        this.tagList = tagList;
+    }
 }
