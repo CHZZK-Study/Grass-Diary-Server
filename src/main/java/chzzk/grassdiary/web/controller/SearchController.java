@@ -1,6 +1,7 @@
 package chzzk.grassdiary.web.controller;
 
-import chzzk.grassdiary.service.TagService;
+import chzzk.grassdiary.service.diary.DiaryService;
+import chzzk.grassdiary.service.diary.TagService;
 import chzzk.grassdiary.web.dto.diary.DiaryDTO;
 import chzzk.grassdiary.web.dto.diary.TagDTO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "검색 컨트롤러")
 public class SearchController {
     private final TagService tagService;
+    private final DiaryService diaryService;
 
     @GetMapping("hashTag/{memberId}")
     @Operation(
@@ -46,5 +48,18 @@ public class SearchController {
     })
     public ResponseEntity<?> findByHashTagId(@PathVariable Long memberId, @RequestParam Long tagId) {
         return ResponseEntity.ok(tagService.findByHashTagId(memberId, tagId));
+    }
+
+    @GetMapping("date/{memberId}")
+    @Operation(
+            summary = "날짜별 일기 검색",
+            description = "유저별 날짜에 따른 일기 검색(잔디 클릭시 사용)")
+    @Parameters({
+            @Parameter(name = "memberId", description = "멤버 아이디"),
+            @Parameter(name = "date", description = "검색하는 날짜 String 값(형식: yyyy-MM-dd)")
+    })
+    @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = DiaryDTO.class)))
+    public ResponseEntity<?> searchByDate(@PathVariable Long memberId, @RequestParam String date) {
+        return ResponseEntity.ok(diaryService.findByDate(memberId, date));
     }
 }

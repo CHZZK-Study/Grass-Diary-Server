@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -30,4 +31,11 @@ public class DiaryLike extends BaseCreatedTimeEntity {
     @ManyToOne
     @JoinColumn(name = "diary_id")
     private Diary diary;
+
+    @Builder
+    public DiaryLike(Long id, Member member, Diary diary) {
+        this.id = id;
+        this.member = member;
+        this.diary = diary;
+    }
 }

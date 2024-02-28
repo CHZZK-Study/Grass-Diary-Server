@@ -1,7 +1,7 @@
 package chzzk.grassdiary.web.controller;
 
-import chzzk.grassdiary.service.DiaryService;
 import chzzk.grassdiary.service.MainService;
+import chzzk.grassdiary.service.diary.DiaryService;
 import chzzk.grassdiary.web.dto.diary.CountAndMonthGrassDTO;
 import chzzk.grassdiary.web.dto.main.TodayInfoDTO;
 import io.swagger.v3.oas.annotations.Operation;

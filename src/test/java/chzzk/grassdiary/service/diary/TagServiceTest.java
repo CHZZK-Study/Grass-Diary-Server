@@ -1,4 +1,4 @@
-package chzzk.grassdiary.service;
+package chzzk.grassdiary.service.diary;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -1,4 +1,4 @@
-package chzzk.grassdiary.service;
+package chzzk.grassdiary.service.diary;
 
 import chzzk.grassdiary.domain.diary.Diary;
 import chzzk.grassdiary.domain.diary.tag.DiaryTagRepository;

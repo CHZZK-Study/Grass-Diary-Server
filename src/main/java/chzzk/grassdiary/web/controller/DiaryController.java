@@ -1,11 +1,12 @@
 package chzzk.grassdiary.web.controller;
 
-import chzzk.grassdiary.service.DiaryService;
+import chzzk.grassdiary.service.diary.DiaryService;
 import chzzk.grassdiary.web.dto.diary.DiaryDTO;
+import chzzk.grassdiary.web.dto.diary.DiarySaveDTO;
+import chzzk.grassdiary.web.dto.diary.DiaryUpdateDTO;
 import chzzk.grassdiary.web.dto.diary.PopularDiaryDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -15,10 +16,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -27,6 +31,30 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "일기 컨트롤러")
 public class DiaryController {
     private final DiaryService diaryService;
+
+    /**
+     * CRUD
+     */
+    @PostMapping
+    public Long save(@RequestBody DiarySaveDTO.Request requestDto) {
+        return diaryService.save(requestDto);
+    }
+
+    @PatchMapping("/{id}")
+    public Long update(@PathVariable(name = "id") Long id, @RequestBody DiaryUpdateDTO.Request requestDto) {
+        return diaryService.update(id, requestDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public Long delete(@PathVariable(name = "id") Long id) {
+        diaryService.delete(id);
+        return id;
+    }
+
+    @GetMapping("/{id}")
+    public DiarySaveDTO.Response findById(@PathVariable(name = "id") Long id) {
+        return diaryService.findById(id);
+    }
 
     /**
      * 유저별 일기장 메인 페이지 1) 디폴트 API(최신순 5개씩) : api/diary/main/1?page=0 2) 오래된 순 5개씩 :
@@ -44,19 +72,6 @@ public class DiaryController {
             @PathVariable Long memberId
     ) {
         return ResponseEntity.ok(diaryService.findAll(pageable, memberId));
-    }
-
-    @GetMapping("/{memberId}")
-    @Operation(
-            summary = "날짜별 일기 검색",
-            description = "유저별 날짜에 따른 일기 검색(잔디 클릭시 사용)")
-    @Parameters({
-            @Parameter(name = "memberId", description = "멤버 아이디"),
-            @Parameter(name = "date", description = "검색하는 날짜 String 값(형식: yyyy-MM-dd)")
-    })
-    @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = DiaryDTO.class)))
-    public ResponseEntity<?> searchByDate(@PathVariable Long memberId, @RequestParam String date) {
-        return ResponseEntity.ok(diaryService.findByDate(memberId, date));
     }
 
     @GetMapping("/popularity/{memberId}")
