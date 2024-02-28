@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,4 +23,10 @@ public class ColorCode {
     private String colorName;
 
     private String rgb;
+
+    @Builder
+    public ColorCode(String colorName, String rgb) {
+        this.colorName = colorName;
+        this.rgb = rgb;
+    }
 }
