@@ -7,7 +7,6 @@ import chzzk.grassdiary.web.dto.diary.DiaryUpdateDTO;
 import chzzk.grassdiary.web.dto.diary.PopularDiaryDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -24,7 +23,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -74,19 +72,6 @@ public class DiaryController {
             @PathVariable Long memberId
     ) {
         return ResponseEntity.ok(diaryService.findAll(pageable, memberId));
-    }
-
-    @GetMapping("/{memberId}")
-    @Operation(
-            summary = "날짜별 일기 검색",
-            description = "유저별 날짜에 따른 일기 검색(잔디 클릭시 사용)")
-    @Parameters({
-            @Parameter(name = "memberId", description = "멤버 아이디"),
-            @Parameter(name = "date", description = "검색하는 날짜 String 값(형식: yyyy-MM-dd)")
-    })
-    @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = DiaryDTO.class)))
-    public ResponseEntity<?> searchByDate(@PathVariable Long memberId, @RequestParam String date) {
-        return ResponseEntity.ok(diaryService.findByDate(memberId, date));
     }
 
     @GetMapping("/popularity/{memberId}")
