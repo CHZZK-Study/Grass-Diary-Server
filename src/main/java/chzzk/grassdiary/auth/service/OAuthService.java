@@ -7,7 +7,7 @@ import chzzk.grassdiary.auth.service.dto.GoogleOAuthToken;
 import chzzk.grassdiary.auth.service.dto.GoogleUserInfo;
 import chzzk.grassdiary.auth.service.dto.JWTTokenResponse;
 import chzzk.grassdiary.auth.util.GoogleOAuthUriGenerator;
-import chzzk.grassdiary.domain.member.entity.Member;
+import chzzk.grassdiary.domain.member.Member;
 import chzzk.grassdiary.domain.member.repository.MemberRepository;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
 package chzzk.grassdiary.auth.service.dto;
 
-import chzzk.grassdiary.domain.member.entity.Member;
+import chzzk.grassdiary.domain.member.Member;
 
 public record AuthMemberPayload(Long id) {
     public static AuthMemberPayload from(Member member) {
