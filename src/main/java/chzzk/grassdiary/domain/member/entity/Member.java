@@ -1,4 +1,4 @@
-package chzzk.grassdiary.domain.member;
+package chzzk.grassdiary.domain.member.entity;
 
 import chzzk.grassdiary.domain.base.BaseTimeEntity;
 import chzzk.grassdiary.domain.color.ColorCode;
@@ -20,12 +20,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
-@Getter
-@Setter // DBTest에서 임시 사용
+@Entity
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Entity
+@Getter
+@Setter // DBTest에서 임시 사용
 public class Member extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
