@@ -10,7 +10,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -37,7 +36,6 @@ public class Member extends BaseTimeEntity {
     private String nickname;  // auth
 
     @Column(nullable = false, length = 200)
-    @Email(message = "유효하지 않은 이메일 주소입니다.")
     private String email; // auth
 
     @Lob
