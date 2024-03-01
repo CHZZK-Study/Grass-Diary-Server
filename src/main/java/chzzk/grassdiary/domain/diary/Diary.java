@@ -2,7 +2,7 @@ package chzzk.grassdiary.domain.diary;
 
 import chzzk.grassdiary.domain.base.BaseTimeEntity;
 import chzzk.grassdiary.domain.color.ConditionLevel;
-import chzzk.grassdiary.domain.member.Member;
+import chzzk.grassdiary.domain.member.entity.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
