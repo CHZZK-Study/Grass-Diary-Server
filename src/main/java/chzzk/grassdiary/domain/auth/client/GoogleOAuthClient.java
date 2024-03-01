@@ -15,11 +15,8 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-/**
- * 스프링 서버가 구글 서버에 인가 코드를 전달하여 액세스 토큰을 받는다.
- */
-@Component
 @Slf4j
+@Component
 public class GoogleOAuthClient implements OAuthClient {
     private static final String OAUTH_GRANT_TYPE = "authorization_code";
     private final GoogleOAuthProperties googleOAuthProperties;
@@ -30,11 +27,6 @@ public class GoogleOAuthClient implements OAuthClient {
         this.restTemplate = restTemplateBuilder.build();
     }
 
-    /**
-     * @param code     인가 코드
-     * @param isSignUp 회원가입 여부
-     * @return 구글 서버에서 발급한 액세스 토큰 (= 사용자 정보를 요청하기 위한 액세스 토큰)
-     */
     @Override
     public GoogleOAuthToken getGoogleAccessToken(String code) {
         HttpHeaders httpHeaders = createGoogleAccessRequestHeaders();
@@ -47,11 +39,7 @@ public class GoogleOAuthClient implements OAuthClient {
         log.info("=======> 구글로부터 받은 토큰: {}", googleOAuthTokenResponseEntity.getBody());
         return googleOAuthTokenResponseEntity.getBody();
     }
-
-    /**
-     * @param accessToken 구글 서버로부터 발급받은 액세스 토큰
-     * @return 구글 서버로부터 받은 사용자 정보
-     */
+    
     @Override
     public GoogleUserInfo getGoogleUserInfo(String accessToken) {
         HttpHeaders httpHeaders = createUserInfoRequestHeaders(accessToken);
@@ -63,8 +51,8 @@ public class GoogleOAuthClient implements OAuthClient {
                         GoogleUserInfo.class)
                 .getBody();
 
-        log.info("=====> 구글로부터 받아온 사용자 정보: id - {}, 이메일 - {},  닉네임 - {}, 사진 - {}",
-                body.id(), body.email(), body.nickname(), body.picture());
+        log.info("=====> 구글로부터 받아온 사용자 정보: 이메일 - {},  닉네임 - {}, 사진 - {}",
+                body.email(), body.nickname(), body.picture());
 
         return body;
     }
