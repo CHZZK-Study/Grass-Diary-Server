@@ -1,5 +1,6 @@
 package chzzk.grassdiary.domain.member.repository;
 
+import chzzk.grassdiary.domain.member.Member;
 import chzzk.grassdiary.domain.member.entity.Member;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;

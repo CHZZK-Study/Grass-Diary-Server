@@ -3,7 +3,8 @@ package chzzk.grassdiary.domain.auth.jwt;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
-import chzzk.grassdiary.domain.auth.service.dto.AuthMemberPayload;
+import chzzk.grassdiary.auth.jwt.JwtTokenProvider;
+import chzzk.grassdiary.auth.service.dto.AuthMemberPayload;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
