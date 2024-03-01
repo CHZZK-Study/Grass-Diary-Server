@@ -1,6 +1,6 @@
 package chzzk.grassdiary.domain.diary.tag;
 
-import chzzk.grassdiary.domain.member.entity.Member;
+import chzzk.grassdiary.domain.member.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

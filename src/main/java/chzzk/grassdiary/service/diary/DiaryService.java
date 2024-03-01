@@ -9,7 +9,7 @@ import chzzk.grassdiary.domain.diary.tag.DiaryTagRepository;
 import chzzk.grassdiary.domain.diary.tag.MemberTags;
 import chzzk.grassdiary.domain.diary.tag.TagList;
 import chzzk.grassdiary.domain.member.Member;
-import chzzk.grassdiary.domain.member.MemberRepository;
+import chzzk.grassdiary.domain.member.repository.MemberRepository;
 import chzzk.grassdiary.web.dto.diary.CountAndMonthGrassDTO;
 import chzzk.grassdiary.web.dto.diary.DiaryDTO;
 import chzzk.grassdiary.web.dto.diary.DiarySaveDTO;
