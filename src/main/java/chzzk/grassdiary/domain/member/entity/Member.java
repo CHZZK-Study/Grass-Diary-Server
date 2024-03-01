@@ -1,4 +1,4 @@
-package chzzk.grassdiary.domain.member.entity;
+package chzzk.grassdiary.domain.member;
 
 import chzzk.grassdiary.domain.base.BaseTimeEntity;
 import chzzk.grassdiary.domain.color.ColorCode;
@@ -25,7 +25,7 @@ import org.hibernate.annotations.ColumnDefault;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
-@Setter // DBTest에서 임시 사용
+@Setter
 public class Member extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,6 +45,7 @@ public class Member extends BaseTimeEntity {
 
     private Long grassCount;
 
+    @ColumnDefault("0")
     private Integer rewardPoint;
 
     @ColumnDefault("false")
@@ -54,4 +55,11 @@ public class Member extends BaseTimeEntity {
     private ColorCode currentColorCode;
 
     private String profileIntro;
+
+    public Member(String nickname, String email, ColorCode currentColorCode) {
+        this.nickname = nickname;
+        this.email = email;
+        this.currentColorCode = currentColorCode;
+        this.rewardPoint = 0;
+    }
 }

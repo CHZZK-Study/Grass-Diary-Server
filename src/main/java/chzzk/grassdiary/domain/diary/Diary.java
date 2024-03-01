@@ -13,8 +13,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,7 +25,7 @@ import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Setter // DBTest에서 임시 사용
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Diary extends BaseTimeEntity {
     @Id
@@ -51,4 +54,25 @@ public class Diary extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     private ConditionLevel conditionLevel;
+
+    @Builder
+    protected Diary(Member member, String content, Boolean isPrivate, Boolean hasImage,
+                 Boolean hasTag, ConditionLevel conditionLevel) {
+        this.member = member;
+        this.content = content;
+        this.isPrivate = isPrivate;
+        this.hasImage = hasImage;
+        this.hasTag = hasTag;
+        this.conditionLevel = conditionLevel;
+        this.setCreatedAt(LocalDateTime.now());
+    }
+
+    public void update(String content, Boolean isPrivate, Boolean hasImage, Boolean hasTag,
+                       ConditionLevel conditionLevel) {
+        this.content = content;
+        this.isPrivate = isPrivate;
+        this.hasImage = hasImage;
+        this.hasTag = hasTag;
+        this.conditionLevel = conditionLevel;
+    }
 }
