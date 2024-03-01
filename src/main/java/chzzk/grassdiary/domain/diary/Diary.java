@@ -2,7 +2,7 @@ package chzzk.grassdiary.domain.diary;
 
 import chzzk.grassdiary.domain.base.BaseTimeEntity;
 import chzzk.grassdiary.domain.color.ConditionLevel;
-import chzzk.grassdiary.domain.member.entity.Member;
+import chzzk.grassdiary.domain.member.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -13,7 +13,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
@@ -24,7 +23,7 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 @Getter
-@Setter // DBTest에서 임시 사용
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Diary extends BaseTimeEntity {
@@ -57,14 +56,14 @@ public class Diary extends BaseTimeEntity {
 
     @Builder
     protected Diary(Member member, String content, Boolean isPrivate, Boolean hasImage,
-                 Boolean hasTag, ConditionLevel conditionLevel) {
+                    Boolean hasTag, ConditionLevel conditionLevel) {
         this.member = member;
         this.content = content;
         this.isPrivate = isPrivate;
         this.hasImage = hasImage;
         this.hasTag = hasTag;
         this.conditionLevel = conditionLevel;
-        this.setCreatedAt(LocalDateTime.now());
+        //this.setCreatedAt(LocalDateTime.now()); // fix. 해당 메소드를 찾을 수 없어 error 발생
     }
 
     public void update(String content, Boolean isPrivate, Boolean hasImage, Boolean hasTag,
