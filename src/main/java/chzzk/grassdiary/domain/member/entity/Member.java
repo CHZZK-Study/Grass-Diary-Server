@@ -10,28 +10,36 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.Size;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
-@Getter
-@Setter // DBTest에서 임시 사용
-@NoArgsConstructor
 @Entity
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Getter
+@Setter
 public class Member extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
     private Long id;
 
-    private String nickname;
+    @Column(nullable = false, name = "given_name", unique = true)
+    @Size(min = 1, max = 20)
+    private String nickname;  // auth
 
-    private String email;
+    @Column(nullable = false, length = 200)
+    private String email; // auth
 
     @Lob
-    private String profileImageUrl;
+    private String picture; // auth
 
     private Long grassCount;
 
@@ -46,7 +54,6 @@ public class Member extends BaseTimeEntity {
 
     private String profileIntro;
 
-    @Builder
     public Member(String nickname, String email, ColorCode currentColorCode) {
         this.nickname = nickname;
         this.email = email;

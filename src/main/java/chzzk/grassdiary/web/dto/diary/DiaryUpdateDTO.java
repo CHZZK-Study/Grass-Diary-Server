@@ -2,7 +2,6 @@ package chzzk.grassdiary.web.dto.diary;
 
 import chzzk.grassdiary.domain.color.ConditionLevel;
 import chzzk.grassdiary.domain.diary.Diary;
-import chzzk.grassdiary.domain.member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +14,7 @@ public class DiaryUpdateDTO {
     @Builder
     public static class Request {
 
-        private Member member;
+        //        private Member member;
         private String content;
         private Boolean isPrivate;
         private Boolean hasImage;
@@ -24,16 +23,14 @@ public class DiaryUpdateDTO {
 
         // DTO -> Entity
         public Diary toEntity() {
-            Diary diary = Diary.builder()
-                    .member(member)
+            return Diary.builder()
+//                    .member(member)
                     .content(content)
                     .isPrivate(isPrivate)
                     .hasImage(hasImage)
                     .hasTag(hasTag)
                     .conditionLevel(conditionLevel)
                     .build();
-
-            return diary;
         }
     }
 

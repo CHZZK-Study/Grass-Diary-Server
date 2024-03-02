@@ -11,7 +11,7 @@ import chzzk.grassdiary.domain.diary.tag.DiaryTagRepository;
 import chzzk.grassdiary.domain.diary.tag.MemberTagsRepository;
 import chzzk.grassdiary.domain.diary.tag.TagListRepository;
 import chzzk.grassdiary.domain.member.Member;
-import chzzk.grassdiary.domain.member.MemberRepository;
+import chzzk.grassdiary.domain.member.repository.MemberRepository;
 import chzzk.grassdiary.service.diary.DiaryService;
 import chzzk.grassdiary.web.dto.diary.CountAndMonthGrassDTO;
 import chzzk.grassdiary.web.dto.diary.DiaryDTO;
@@ -27,6 +27,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 class DiaryServiceTest {
+    protected List<Member> members;
+    protected List<Diary> diaries;
+    protected List<ColorCode> colorCodes;
     @Autowired
     MemberRepository memberRepository;
     @Autowired
@@ -39,13 +42,8 @@ class DiaryServiceTest {
     DiaryTagRepository diaryTagRepository;
     @Autowired
     ColorCodeRepository colorCodeRepository;
-
     @Autowired
     DiaryService diaryService;
-
-    protected List<Member> members;
-    protected List<Diary> diaries;
-    protected List<ColorCode> colorCodes;
 
     @BeforeEach
     void beforeEach() {

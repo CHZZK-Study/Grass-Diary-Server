@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
-@Setter // DBTest에서 임시 사용
+@Setter
 @NoArgsConstructor
 @Entity
 public class TagList {

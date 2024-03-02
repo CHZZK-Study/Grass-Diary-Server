@@ -5,14 +5,14 @@ import chzzk.grassdiary.domain.color.ColorCodeRepository;
 import chzzk.grassdiary.domain.color.ConditionLevel;
 import chzzk.grassdiary.domain.diary.DiaryRepository;
 import chzzk.grassdiary.domain.member.Member;
-import chzzk.grassdiary.domain.member.MemberRepository;
+import chzzk.grassdiary.domain.member.repository.MemberRepository;
 import chzzk.grassdiary.web.dto.diary.DiarySaveDTO;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-  
+
 @SpringBootTest
 public class DiaryServiceTest {
 
@@ -56,7 +56,7 @@ public class DiaryServiceTest {
 
         colorCodeRepository.save(colorCode);
         memberRepository.save(member);
-        diaryService.save(requestDto);
+        diaryService.save(1L, requestDto);
 
         System.out.println("###################################");
         System.out.println("###################################");

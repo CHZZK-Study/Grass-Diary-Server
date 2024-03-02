@@ -9,7 +9,7 @@ import chzzk.grassdiary.domain.diary.tag.DiaryTagRepository;
 import chzzk.grassdiary.domain.diary.tag.MemberTags;
 import chzzk.grassdiary.domain.diary.tag.TagList;
 import chzzk.grassdiary.domain.member.Member;
-import chzzk.grassdiary.domain.member.MemberRepository;
+import chzzk.grassdiary.domain.member.repository.MemberRepository;
 import chzzk.grassdiary.web.dto.diary.CountAndMonthGrassDTO;
 import chzzk.grassdiary.web.dto.diary.DiaryDTO;
 import chzzk.grassdiary.web.dto.diary.DiarySaveDTO;
@@ -40,8 +40,11 @@ public class DiaryService {
 
     // CREATE 일기 저장 후 id 반환(Redirect를 위해?)
     @Transactional
-    public Long save(DiarySaveDTO.Request requestDto) {
-        return diaryRepository.save(requestDto.toEntity()).getId();
+    public Long save(Long id, DiarySaveDTO.Request requestDto) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다. id = " + id));
+
+        return diaryRepository.save(requestDto.toEntity(member)).getId();
     }
 
     @Transactional

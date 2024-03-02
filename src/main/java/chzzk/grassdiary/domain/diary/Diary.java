@@ -24,7 +24,7 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 @Getter
-@Setter // DBTest에서 임시 사용
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Diary extends BaseTimeEntity {
@@ -57,7 +57,7 @@ public class Diary extends BaseTimeEntity {
 
     @Builder
     protected Diary(Member member, String content, Boolean isPrivate, Boolean hasImage,
-                 Boolean hasTag, ConditionLevel conditionLevel) {
+                    Boolean hasTag, ConditionLevel conditionLevel) {
         this.member = member;
         this.content = content;
         this.isPrivate = isPrivate;
