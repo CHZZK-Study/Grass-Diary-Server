@@ -39,4 +39,4 @@ out/
 ### oauth setting ###
 src/main/resources/application.yaml
 src/main/resources/application.properties
-src/main/resources/.env
+.env*
