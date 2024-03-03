@@ -28,4 +28,3 @@ public class TagList {
         this.tag = tag;
     }
 }
-

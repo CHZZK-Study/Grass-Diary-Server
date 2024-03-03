@@ -5,9 +5,12 @@ import chzzk.grassdiary.domain.diary.Diary;
 import chzzk.grassdiary.domain.diary.DiaryImageRepository;
 import chzzk.grassdiary.domain.diary.DiaryLikeRepository;
 import chzzk.grassdiary.domain.diary.DiaryRepository;
+import chzzk.grassdiary.domain.diary.tag.DiaryTag;
 import chzzk.grassdiary.domain.diary.tag.DiaryTagRepository;
 import chzzk.grassdiary.domain.diary.tag.MemberTags;
+import chzzk.grassdiary.domain.diary.tag.MemberTagsRepository;
 import chzzk.grassdiary.domain.diary.tag.TagList;
+import chzzk.grassdiary.domain.diary.tag.TagListRepository;
 import chzzk.grassdiary.domain.member.Member;
 import chzzk.grassdiary.domain.member.MemberRepository;
 import chzzk.grassdiary.web.dto.diary.CountAndMonthGrassDTO;
@@ -35,6 +38,8 @@ public class DiaryService {
     private final DiaryRepository diaryRepository;
     private final DiaryLikeRepository diaryLikeRepository;
     private final DiaryImageRepository diaryImageRepository;
+    private final TagListRepository tagListRepository;
+    private final MemberTagsRepository memberTagsRepository;
     private final MemberRepository memberRepository;
     private final DiaryTagRepository diaryTagRepository;
 
@@ -44,7 +49,19 @@ public class DiaryService {
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다. id = " + id));
 
-        return diaryRepository.save(requestDto.toEntity(member)).getId();
+        Diary diary = diaryRepository.save(requestDto.toEntity(member));
+
+        if (requestDto.getHashtags() != null) {
+            for (String hashtag : requestDto.getHashtags()) {
+                TagList tagList = tagListRepository.findByTag(hashtag)
+                        .orElseGet(() -> tagListRepository.save(new TagList(hashtag)));
+                MemberTags memberTags = memberTagsRepository.findByMemberIdAndTagList(member.getId(), tagList)
+                        .orElseGet(() -> memberTagsRepository.save(new MemberTags(member, tagList)));
+                diaryTagRepository.save(new DiaryTag(diary, memberTags));
+            }
+        }
+
+        return diary.getId();
     }
 
     @Transactional
