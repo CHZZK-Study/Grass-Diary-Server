@@ -7,12 +7,14 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
@@ -32,7 +34,7 @@ public class Diary extends BaseTimeEntity {
     @Column(name = "diary_id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
@@ -63,7 +65,7 @@ public class Diary extends BaseTimeEntity {
         this.hasImage = hasImage;
         this.hasTag = hasTag;
         this.conditionLevel = conditionLevel;
-        //this.setCreatedAt(LocalDateTime.now()); // fix. 해당 메소드를 찾을 수 없어 error 발생
+        this.setCreatedAt(LocalDateTime.now());
     }
 
     public void update(String content, Boolean isPrivate, Boolean hasImage, Boolean hasTag,
