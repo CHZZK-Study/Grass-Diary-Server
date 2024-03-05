@@ -15,7 +15,6 @@ import chzzk.grassdiary.domain.member.Member;
 import chzzk.grassdiary.domain.member.MemberRepository;
 import chzzk.grassdiary.web.dto.diary.CountAndMonthGrassDTO;
 import chzzk.grassdiary.web.dto.diary.DiaryDTO;
-import chzzk.grassdiary.web.dto.diary.DiaryResponseDTO;
 import chzzk.grassdiary.web.dto.diary.DiarySaveDTO;
 import chzzk.grassdiary.web.dto.diary.DiaryUpdateDTO;
 import chzzk.grassdiary.web.dto.diary.PopularDiaryDTO;
@@ -24,7 +23,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -105,18 +103,23 @@ public class DiaryService {
     }
 
     @Transactional(readOnly = true)
-    public DiaryResponseDTO findById(Long id) {
+    public DiaryDTO findById(Long id) {
         Diary diary = diaryRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 일기가 존재하지 않습니다. id = " + id));
         //조회한 결과를 담은 DTO 객체를 생성해서 반환
-        List<DiaryTag> diaryTags = diaryTagRepository.findAllByDiaryId(diary.getId());
-        List<TagList> tags = new ArrayList<>();
-        for (DiaryTag diaryTag : diaryTags) {
-            tags.add(diaryTag.getMemberTags().getTagList());
-            System.out.println("diaryTag.MemberTags : " + diaryTag.getMemberTags());
-        }
+//        List<DiaryTag> diaryTags = diaryTagRepository.findAllByDiaryId(diary.getId());
+//        List<TagList> tags = new ArrayList<>();
+//        for (DiaryTag diaryTag : diaryTags) {
+//            tags.add(diaryTag.getMemberTags().getTagList());
+//        }
 
-        return new DiaryResponseDTO(diary, tags);
+        List<MemberTags> diaryTags = diaryTagRepository.findMemberTagsByDiaryId(diary.getId());
+        List<TagList> tags = diaryTags.stream()
+                .map(MemberTags::getTagList)
+                .toList();
+
+//        return new DiaryResponseDTO(diary, tags);
+        return DiaryDTO.from(diary, tags);
     }
 
     @Transactional(readOnly = true)

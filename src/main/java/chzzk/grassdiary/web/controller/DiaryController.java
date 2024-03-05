@@ -2,7 +2,6 @@ package chzzk.grassdiary.web.controller;
 
 import chzzk.grassdiary.service.diary.DiaryService;
 import chzzk.grassdiary.web.dto.diary.DiaryDTO;
-import chzzk.grassdiary.web.dto.diary.DiaryResponseDTO;
 import chzzk.grassdiary.web.dto.diary.DiarySaveDTO;
 import chzzk.grassdiary.web.dto.diary.DiaryUpdateDTO;
 import chzzk.grassdiary.web.dto.diary.PopularDiaryDTO;
@@ -53,7 +52,7 @@ public class DiaryController {
     }
 
     @GetMapping("/{id}")
-    public DiaryResponseDTO findById(@PathVariable(name = "id") Long id) {
+    public DiaryDTO findById(@PathVariable(name = "id") Long id) {
         return diaryService.findById(id);
     }
 
