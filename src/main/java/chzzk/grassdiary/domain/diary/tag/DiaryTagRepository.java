@@ -13,4 +13,6 @@ public interface DiaryTagRepository extends JpaRepository<DiaryTag, Long> {
 
     @Query("SELECT dt.memberTags FROM DiaryTag dt WHERE dt.diary.id = :diaryId")
     List<MemberTags> findMemberTagsByDiaryId(Long diaryId);
+
+    List<DiaryTag> findAllByDiaryId(Long diaryId);
 }

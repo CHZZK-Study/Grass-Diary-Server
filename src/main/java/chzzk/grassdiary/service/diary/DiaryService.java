@@ -15,6 +15,7 @@ import chzzk.grassdiary.domain.member.Member;
 import chzzk.grassdiary.domain.member.MemberRepository;
 import chzzk.grassdiary.web.dto.diary.CountAndMonthGrassDTO;
 import chzzk.grassdiary.web.dto.diary.DiaryDTO;
+import chzzk.grassdiary.web.dto.diary.DiaryResponseDTO;
 import chzzk.grassdiary.web.dto.diary.DiarySaveDTO;
 import chzzk.grassdiary.web.dto.diary.DiaryUpdateDTO;
 import chzzk.grassdiary.web.dto.diary.PopularDiaryDTO;
@@ -23,14 +24,17 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class DiaryService {
@@ -43,7 +47,6 @@ public class DiaryService {
     private final MemberRepository memberRepository;
     private final DiaryTagRepository diaryTagRepository;
 
-    // CREATE 일기 저장 후 id 반환(Redirect를 위해?)
     @Transactional
     public Long save(Long id, DiarySaveDTO.Request requestDto) {
         Member member = memberRepository.findById(id)
@@ -72,6 +75,24 @@ public class DiaryService {
         diary.update(requestDto.getContent(), requestDto.getIsPrivate(), requestDto.getHasImage(),
                 requestDto.getHasTag(), requestDto.getConditionLevel());
 
+        //update가 일어날 때 tag_list 테이블은 놔둬야하나?
+        // 다른 곳에서도 해당 태그를 참조할 수 있는데..
+        // 하지만 그냥 놔두면 계속 누적 됨. -> 나중에 한번에 삭제?
+        // TagList 테이블에 태그 사용횟수를 기록하는 column을 추가해서 그 값이 0 이면 삭제하도록하는건 어떨까?
+        if (requestDto.getHashtags() != null) {
+            // tagList는 검색 후 추가하도록 하고
+            // 나머지는 위의 diary 처럼 update를 만들어주자
+            // update를 해야되나? 모두 삭제하고 새로 추가해줘야되나?
+            for (String hashtag : requestDto.getHashtags()) {
+                TagList tagList = tagListRepository.findByTag(hashtag)
+                        .orElseGet(() -> tagListRepository.save(new TagList(hashtag)));
+                MemberTags memberTags = memberTagsRepository.findByMemberIdAndTagList(diary.getMember().getId(),
+                                tagList)
+                        .orElseGet(() -> memberTagsRepository.save(new MemberTags(diary.getMember(), tagList)));
+                diaryTagRepository.save(new DiaryTag(diary, memberTags));
+            }
+        }
+
         return id;
     }
 
@@ -84,11 +105,18 @@ public class DiaryService {
     }
 
     @Transactional(readOnly = true)
-    public DiarySaveDTO.Response findById(Long id) {
+    public DiaryResponseDTO findById(Long id) {
         Diary diary = diaryRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 일기가 존재하지 않습니다. id = " + id));
         //조회한 결과를 담은 DTO 객체를 생성해서 반환
-        return new DiarySaveDTO.Response(diary);
+        List<DiaryTag> diaryTags = diaryTagRepository.findAllByDiaryId(diary.getId());
+        List<TagList> tags = new ArrayList<>();
+        for (DiaryTag diaryTag : diaryTags) {
+            tags.add(diaryTag.getMemberTags().getTagList());
+            System.out.println("diaryTag.MemberTags : " + diaryTag.getMemberTags());
+        }
+
+        return new DiaryResponseDTO(diary, tags);
     }
 
     @Transactional(readOnly = true)
