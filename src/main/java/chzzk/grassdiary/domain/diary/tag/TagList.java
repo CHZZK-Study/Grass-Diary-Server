@@ -12,7 +12,7 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 @Getter
-@Setter // DBTest에서 임시 사용
+@Setter
 @NoArgsConstructor
 @Entity
 public class TagList {
