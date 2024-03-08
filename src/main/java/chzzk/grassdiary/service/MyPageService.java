@@ -4,7 +4,7 @@ import chzzk.grassdiary.domain.color.ColorCode;
 import chzzk.grassdiary.domain.diary.Diary;
 import chzzk.grassdiary.domain.diary.DiaryRepository;
 import chzzk.grassdiary.domain.member.Member;
-import chzzk.grassdiary.domain.member.repository.MemberRepository;
+import chzzk.grassdiary.domain.member.MemberRepository;
 import chzzk.grassdiary.web.dto.member.GrassInfoDTO;
 import chzzk.grassdiary.web.dto.member.MemberInfoDTO;
 import chzzk.grassdiary.web.dto.member.TotalRewardDTO;

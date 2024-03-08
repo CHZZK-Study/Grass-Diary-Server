@@ -12,7 +12,7 @@ import chzzk.grassdiary.domain.diary.tag.MemberTagsRepository;
 import chzzk.grassdiary.domain.diary.tag.TagList;
 import chzzk.grassdiary.domain.diary.tag.TagListRepository;
 import chzzk.grassdiary.domain.member.Member;
-import chzzk.grassdiary.domain.member.repository.MemberRepository;
+import chzzk.grassdiary.domain.member.MemberRepository;
 import chzzk.grassdiary.web.dto.diary.CountAndMonthGrassDTO;
 import chzzk.grassdiary.web.dto.diary.DiaryDTO;
 import chzzk.grassdiary.web.dto.diary.DiaryResponseDTO;
@@ -114,7 +114,7 @@ public class DiaryService {
                 diaryTagRepository.save(new DiaryTag(diary, newMemberTags));
             }
         }
-        
+
         // diary update 적용
         diary.update(requestDto.getContent(), requestDto.getIsPrivate(), requestDto.getHasImage(),
                 requestDto.getHasTag(), requestDto.getConditionLevel());
