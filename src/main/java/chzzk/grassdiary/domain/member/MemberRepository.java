@@ -1,6 +1,5 @@
-package chzzk.grassdiary.domain.member.repository;
+package chzzk.grassdiary.domain.member;
 
-import chzzk.grassdiary.domain.member.Member;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

@@ -3,6 +3,7 @@ package chzzk.grassdiary.web.dto.diary;
 import chzzk.grassdiary.domain.color.ConditionLevel;
 import chzzk.grassdiary.domain.diary.Diary;
 import chzzk.grassdiary.domain.member.Member;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,6 +23,7 @@ public class DiarySaveDTO {
         private Boolean hasImage;
         private Boolean hasTag;
         private ConditionLevel conditionLevel;
+        private List<String> hashtags;
 
         // DTO -> Entity
         public Diary toEntity(Member member) {
