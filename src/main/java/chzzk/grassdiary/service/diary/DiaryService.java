@@ -58,8 +58,10 @@ public class DiaryService {
             for (String hashtag : requestDto.getHashtags()) {
                 TagList tagList = tagListRepository.findByTag(hashtag)
                         .orElseGet(() -> tagListRepository.save(new TagList(hashtag)));
+                tagList.incrementCount();
                 MemberTags memberTags = memberTagsRepository.findByMemberIdAndTagList(member.getId(), tagList)
                         .orElseGet(() -> memberTagsRepository.save(new MemberTags(member, tagList)));
+                memberTags.incrementCount();
                 diaryTagRepository.save(new DiaryTag(diary, memberTags));
             }
         }
@@ -71,27 +73,51 @@ public class DiaryService {
     public Long update(Long id, DiaryUpdateDTO.Request requestDto) {
         Diary diary = diaryRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 일기가 존재하지 않습니다. id = " + id));
+        // 기존 diaryTag, memberTags, tagList 찾기
+        List<DiaryTag> diaryTags = diaryTagRepository.findAllByDiaryId(diary.getId());
+        List<MemberTags> memberTags = new ArrayList<>();
+        List<TagList> tags = new ArrayList<>();
+        for (DiaryTag diaryTag : diaryTags) {
+            memberTags.add(diaryTag.getMemberTags());
+            tags.add(diaryTag.getMemberTags().getTagList());
+        }
 
-        diary.update(requestDto.getContent(), requestDto.getIsPrivate(), requestDto.getHasImage(),
-                requestDto.getHasTag(), requestDto.getConditionLevel());
+        // 기존 태그 삭제 시작
+        for (DiaryTag diaryTag : diaryTags) {
+            diaryTagRepository.delete(diaryTag);
+        }
 
-        //update가 일어날 때 tag_list 테이블은 놔둬야하나?
-        // 다른 곳에서도 해당 태그를 참조할 수 있는데..
-        // 하지만 그냥 놔두면 계속 누적 됨. -> 나중에 한번에 삭제?
-        // TagList 테이블에 태그 사용횟수를 기록하는 column을 추가해서 그 값이 0 이면 삭제하도록하는건 어떨까?
-        if (requestDto.getHashtags() != null) {
-            // tagList는 검색 후 추가하도록 하고
-            // 나머지는 위의 diary 처럼 update를 만들어주자
-            // update를 해야되나? 모두 삭제하고 새로 추가해줘야되나?
-            for (String hashtag : requestDto.getHashtags()) {
-                TagList tagList = tagListRepository.findByTag(hashtag)
-                        .orElseGet(() -> tagListRepository.save(new TagList(hashtag)));
-                MemberTags memberTags = memberTagsRepository.findByMemberIdAndTagList(diary.getMember().getId(),
-                                tagList)
-                        .orElseGet(() -> memberTagsRepository.save(new MemberTags(diary.getMember(), tagList)));
-                diaryTagRepository.save(new DiaryTag(diary, memberTags));
+        for (MemberTags memberTag : memberTags) {
+            memberTag.decrementCount();
+            if (memberTag.getMemberTagUsageCount() == 0) {
+                memberTagsRepository.delete(memberTag);
             }
         }
+
+        for (TagList tag : tags) {
+            tag.decrementCount();
+            if (tag.getTagUsageCount() == 0) {
+                tagListRepository.delete(tag);
+            }
+        }
+
+        // 새로운 태그 save
+        if (requestDto.getHashtags() != null) {
+            for (String hashtag : requestDto.getHashtags()) {
+                TagList newTagList = tagListRepository.findByTag(hashtag)
+                        .orElseGet(() -> tagListRepository.save(new TagList(hashtag)));
+                newTagList.incrementCount();
+                MemberTags newMemberTags = memberTagsRepository.findByMemberIdAndTagList(diary.getMember().getId(),
+                                newTagList)
+                        .orElseGet(() -> memberTagsRepository.save(new MemberTags(diary.getMember(), newTagList)));
+                newMemberTags.incrementCount();
+                diaryTagRepository.save(new DiaryTag(diary, newMemberTags));
+            }
+        }
+        
+        // diary update 적용
+        diary.update(requestDto.getContent(), requestDto.getIsPrivate(), requestDto.getHasImage(),
+                requestDto.getHasTag(), requestDto.getConditionLevel());
 
         return id;
     }
@@ -100,6 +126,42 @@ public class DiaryService {
     public void delete(Long id) {
         Diary diary = diaryRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 일기가 존재하지 않습니다. id = " + id));
+
+        // diaryId를 이용해서 diaryTag를 모두 찾아내기
+        List<DiaryTag> diaryTags = diaryTagRepository.findAllByDiaryId(diary.getId());
+        System.out.println("diaryTags 찾기 통과");
+        // diaryTag를 이용해서 MemberTag를 모두 찾아내기
+        List<MemberTags> memberTags = new ArrayList<>();
+        List<TagList> tags = new ArrayList<>();
+        for (DiaryTag diaryTag : diaryTags) {
+            memberTags.add(diaryTag.getMemberTags());
+            tags.add(diaryTag.getMemberTags().getTagList());
+        }
+        System.out.println("memberTag, tag 찾기 통과");
+
+        // diaryTag 삭제 -> deleteAllInBatch 고려해보기
+        System.out.println("diaryTag 삭제 시작");
+        for (DiaryTag diaryTag : diaryTags) {
+            diaryTagRepository.delete(diaryTag);
+        }
+        System.out.println("diaryTag 삭제 끝");
+
+        // MemberTag 삭제
+        System.out.println("memberTags 삭제 시작");
+        for (MemberTags memberTag : memberTags) {
+            memberTag.decrementCount();
+            if (memberTag.getMemberTagUsageCount() == 0) {
+                memberTagsRepository.delete(memberTag);
+            }
+        }
+        System.out.println("memberTags 삭제 끝");
+        for (TagList tag : tags) {
+            tag.decrementCount();
+            if (tag.getTagUsageCount() == 0) {
+                tagListRepository.delete(tag);
+            }
+        }
+        System.out.println("tag 감소와 삭제 통과");
 
         diaryRepository.delete(diary);
     }

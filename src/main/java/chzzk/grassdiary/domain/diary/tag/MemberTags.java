@@ -11,6 +11,7 @@ import jakarta.persistence.ManyToOne;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @NoArgsConstructor
@@ -29,9 +30,21 @@ public class MemberTags {
     @JoinColumn(name = "tag_id")
     private TagList tagList;
 
+    @ColumnDefault("0")
+    private Integer memberTagUsageCount;
+
     @Builder
     public MemberTags(Member member, TagList tagList) {
         this.member = member;
         this.tagList = tagList;
+        this.memberTagUsageCount = 0;
+    }
+
+    public void incrementCount() {
+        memberTagUsageCount += 1;
+    }
+
+    public void decrementCount() {
+        memberTagUsageCount -= 1;
     }
 }

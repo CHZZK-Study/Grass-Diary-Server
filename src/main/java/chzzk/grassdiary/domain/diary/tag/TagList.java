@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Setter // DBTest에서 임시 사용
@@ -23,8 +24,20 @@ public class TagList {
     @Column(nullable = false)
     private String tag;
 
+    @ColumnDefault("0")
+    private Integer tagUsageCount;
+
     @Builder
     public TagList(String tag) {
         this.tag = tag;
+        this.tagUsageCount = 0;
+    }
+
+    public void incrementCount() {
+        tagUsageCount += 1;
+    }
+
+    public void decrementCount() {
+        tagUsageCount -= 1;
     }
 }
