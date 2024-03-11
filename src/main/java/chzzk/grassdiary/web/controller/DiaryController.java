@@ -5,9 +5,7 @@ import chzzk.grassdiary.web.dto.diary.DiaryDTO;
 import chzzk.grassdiary.web.dto.diary.DiaryResponseDTO;
 import chzzk.grassdiary.web.dto.diary.DiarySaveDTO;
 import chzzk.grassdiary.web.dto.diary.DiaryUpdateDTO;
-import chzzk.grassdiary.web.dto.diary.PopularDiaryDTO;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -73,15 +71,5 @@ public class DiaryController {
             @PathVariable Long memberId
     ) {
         return ResponseEntity.ok(diaryService.findAll(pageable, memberId));
-    }
-
-    @GetMapping("/popularity/{memberId}")
-    @Operation(
-            summary = "대표 일기",
-            description = "오늘의 좋아요 가장 많은 받은 일기 10개")
-    @Parameter(name = "memberId", description = "멤버 아이디(해당 일기에 대한 작성자의 좋아요 유무를 판단하기 위해 필요)")
-    @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = PopularDiaryDTO.class)))
-    public ResponseEntity<?> todayPopularDiary(@PathVariable Long memberId) {
-        return ResponseEntity.ok(diaryService.popularDiary(memberId));
     }
 }

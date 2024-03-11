@@ -17,8 +17,4 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
     List<Diary> findByMemberIdAndCreatedAtBetween(Long memberId, LocalDateTime startOfDay, LocalDateTime endOfDay);
 
     List<Diary> findAllByMemberId(Long memberId);
-
-    List<Diary> findTop10ByIsPrivateFalseAndCreatedAtBetweenOrderByDiaryLikesDesc(LocalDateTime startOfDay,
-                                                                                  LocalDateTime endOfDay);
-
 }
