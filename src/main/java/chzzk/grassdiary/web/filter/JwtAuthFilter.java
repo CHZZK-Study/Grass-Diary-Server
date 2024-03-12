@@ -4,7 +4,7 @@ import chzzk.grassdiary.auth.exception.AuthenticationException;
 import chzzk.grassdiary.auth.jwt.JwtTokenExtractor;
 import chzzk.grassdiary.auth.jwt.JwtTokenProvider;
 import chzzk.grassdiary.domain.member.Member;
-import chzzk.grassdiary.domain.member.repository.MemberRepository;
+import chzzk.grassdiary.domain.member.MemberRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
