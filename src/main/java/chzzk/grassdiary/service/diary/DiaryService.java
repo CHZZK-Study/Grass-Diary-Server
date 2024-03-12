@@ -18,7 +18,6 @@ import chzzk.grassdiary.web.dto.diary.DiaryDTO;
 import chzzk.grassdiary.web.dto.diary.DiaryResponseDTO;
 import chzzk.grassdiary.web.dto.diary.DiarySaveDTO;
 import chzzk.grassdiary.web.dto.diary.DiaryUpdateDTO;
-import chzzk.grassdiary.web.dto.diary.PopularDiaryDTO;
 import chzzk.grassdiary.web.dto.member.GrassInfoDTO;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -100,6 +99,21 @@ public class DiaryService {
             }
         }
 
+        // 새로운 태그 save
+        if (requestDto.getHashtags() != null) {
+            for (String hashtag : requestDto.getHashtags()) {
+                TagList newTagList = tagListRepository.findByTag(hashtag)
+                        .orElseGet(() -> tagListRepository.save(new TagList(hashtag)));
+                newTagList.incrementCount();
+                MemberTags newMemberTags = memberTagsRepository.findByMemberIdAndTagList(diary.getMember().getId(),
+                                newTagList)
+                        .orElseGet(() -> memberTagsRepository.save(new MemberTags(diary.getMember(), newTagList)));
+                newMemberTags.incrementCount();
+                diaryTagRepository.save(new DiaryTag(diary, newMemberTags));
+            }
+        }
+
+        // diary update 적용
         diary.update(requestDto.getContent(), requestDto.getIsPrivate(), requestDto.getHasImage(),
                 requestDto.getHasTag(), requestDto.getConditionLevel());
 
@@ -237,31 +251,5 @@ public class DiaryService {
                 allByMemberId.size(),
                 new GrassInfoDTO(thisMonthHistory, colorCode.getRgb())
         );
-    }
-
-    /**
-     * 대표 일기(오늘의 좋아요 가장 많은 받은 일기 10개)
-     */
-    @Transactional(readOnly = true)
-    public List<PopularDiaryDTO> popularDiary(Long memberId) {
-        LocalDate today = LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonth(),
-                LocalDate.now().getDayOfMonth());
-
-        List<Diary> popularDiaries = diaryRepository
-                .findTop10ByIsPrivateFalseAndCreatedAtBetweenOrderByDiaryLikesDesc(today.atStartOfDay(),
-                        today.atTime(LocalTime.MAX));
-
-        if (popularDiaries.isEmpty()) {
-            // TODO: 오늘의 일기 없음
-            return null;
-        }
-
-        return popularDiaries.stream()
-                .map(diary -> new PopularDiaryDTO(
-                        diary.getId(),
-                        diary.getContent(),
-                        diary.getDiaryLikes().stream()
-                                .anyMatch(diaryLike -> diaryLike.getMember().getId().equals(memberId))
-                )).collect(Collectors.toList());
     }
 }

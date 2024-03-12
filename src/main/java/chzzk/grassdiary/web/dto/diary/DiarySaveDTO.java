@@ -23,6 +23,7 @@ public class DiarySaveDTO {
         private Boolean hasImage;
         private Boolean hasTag;
         private ConditionLevel conditionLevel;
+        private List<String> hashtags;
 
         // DTO -> Entity
         public Diary toEntity(Member member) {

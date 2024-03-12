@@ -53,7 +53,7 @@ public class DiaryController {
     }
 
     @GetMapping("/{id}")
-    public DiarySaveDTO.Response findById(@PathVariable(name = "id") Long id) {
+    public DiaryResponseDTO findById(@PathVariable(name = "id") Long id) {
         return diaryService.findById(id);
     }
 

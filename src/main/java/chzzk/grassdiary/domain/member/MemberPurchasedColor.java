@@ -1,4 +1,4 @@
-package chzzk.grassdiary.domain.member.entity;
+package chzzk.grassdiary.domain.member;
 
 import chzzk.grassdiary.domain.base.BaseCreatedTimeEntity;
 import chzzk.grassdiary.domain.color.ColorCode;
