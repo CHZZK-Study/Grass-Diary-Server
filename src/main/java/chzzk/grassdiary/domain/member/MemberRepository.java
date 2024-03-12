@@ -1,4 +1,4 @@
-package chzzk.grassdiary.domain.member.repository;
+package chzzk.grassdiary.domain.member;
 
 import chzzk.grassdiary.domain.member.Member;
 import java.util.Optional;

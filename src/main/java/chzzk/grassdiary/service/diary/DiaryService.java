@@ -5,13 +5,17 @@ import chzzk.grassdiary.domain.diary.Diary;
 import chzzk.grassdiary.domain.diary.DiaryImageRepository;
 import chzzk.grassdiary.domain.diary.DiaryLikeRepository;
 import chzzk.grassdiary.domain.diary.DiaryRepository;
+import chzzk.grassdiary.domain.diary.tag.DiaryTag;
 import chzzk.grassdiary.domain.diary.tag.DiaryTagRepository;
 import chzzk.grassdiary.domain.diary.tag.MemberTags;
+import chzzk.grassdiary.domain.diary.tag.MemberTagsRepository;
 import chzzk.grassdiary.domain.diary.tag.TagList;
+import chzzk.grassdiary.domain.diary.tag.TagListRepository;
 import chzzk.grassdiary.domain.member.Member;
-import chzzk.grassdiary.domain.member.repository.MemberRepository;
+import chzzk.grassdiary.domain.member.MemberRepository;
 import chzzk.grassdiary.web.dto.diary.CountAndMonthGrassDTO;
 import chzzk.grassdiary.web.dto.diary.DiaryDTO;
+import chzzk.grassdiary.web.dto.diary.DiaryResponseDTO;
 import chzzk.grassdiary.web.dto.diary.DiarySaveDTO;
 import chzzk.grassdiary.web.dto.diary.DiaryUpdateDTO;
 import chzzk.grassdiary.web.dto.diary.PopularDiaryDTO;
@@ -20,14 +24,16 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class DiaryService {
@@ -35,22 +41,64 @@ public class DiaryService {
     private final DiaryRepository diaryRepository;
     private final DiaryLikeRepository diaryLikeRepository;
     private final DiaryImageRepository diaryImageRepository;
+    private final TagListRepository tagListRepository;
+    private final MemberTagsRepository memberTagsRepository;
     private final MemberRepository memberRepository;
     private final DiaryTagRepository diaryTagRepository;
 
-    // CREATE 일기 저장 후 id 반환(Redirect를 위해?)
     @Transactional
     public Long save(Long id, DiarySaveDTO.Request requestDto) {
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다. id = " + id));
 
-        return diaryRepository.save(requestDto.toEntity(member)).getId();
+        Diary diary = diaryRepository.save(requestDto.toEntity(member));
+
+        if (requestDto.getHashtags() != null) {
+            for (String hashtag : requestDto.getHashtags()) {
+                TagList tagList = tagListRepository.findByTag(hashtag)
+                        .orElseGet(() -> tagListRepository.save(new TagList(hashtag)));
+                tagList.incrementCount();
+                MemberTags memberTags = memberTagsRepository.findByMemberIdAndTagList(member.getId(), tagList)
+                        .orElseGet(() -> memberTagsRepository.save(new MemberTags(member, tagList)));
+                memberTags.incrementCount();
+                diaryTagRepository.save(new DiaryTag(diary, memberTags));
+            }
+        }
+
+        return diary.getId();
     }
 
     @Transactional
     public Long update(Long id, DiaryUpdateDTO.Request requestDto) {
         Diary diary = diaryRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 일기가 존재하지 않습니다. id = " + id));
+        // 기존 diaryTag, memberTags, tagList 찾기
+        List<DiaryTag> diaryTags = diaryTagRepository.findAllByDiaryId(diary.getId());
+        List<MemberTags> memberTags = new ArrayList<>();
+        List<TagList> tags = new ArrayList<>();
+        for (DiaryTag diaryTag : diaryTags) {
+            memberTags.add(diaryTag.getMemberTags());
+            tags.add(diaryTag.getMemberTags().getTagList());
+        }
+
+        // 기존 태그 삭제 시작
+        for (DiaryTag diaryTag : diaryTags) {
+            diaryTagRepository.delete(diaryTag);
+        }
+
+        for (MemberTags memberTag : memberTags) {
+            memberTag.decrementCount();
+            if (memberTag.getMemberTagUsageCount() == 0) {
+                memberTagsRepository.delete(memberTag);
+            }
+        }
+
+        for (TagList tag : tags) {
+            tag.decrementCount();
+            if (tag.getTagUsageCount() == 0) {
+                tagListRepository.delete(tag);
+            }
+        }
 
         diary.update(requestDto.getContent(), requestDto.getIsPrivate(), requestDto.getHasImage(),
                 requestDto.getHasTag(), requestDto.getConditionLevel());
@@ -63,15 +111,57 @@ public class DiaryService {
         Diary diary = diaryRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 일기가 존재하지 않습니다. id = " + id));
 
+        // diaryId를 이용해서 diaryTag를 모두 찾아내기
+        List<DiaryTag> diaryTags = diaryTagRepository.findAllByDiaryId(diary.getId());
+        System.out.println("diaryTags 찾기 통과");
+        // diaryTag를 이용해서 MemberTag를 모두 찾아내기
+        List<MemberTags> memberTags = new ArrayList<>();
+        List<TagList> tags = new ArrayList<>();
+        for (DiaryTag diaryTag : diaryTags) {
+            memberTags.add(diaryTag.getMemberTags());
+            tags.add(diaryTag.getMemberTags().getTagList());
+        }
+        System.out.println("memberTag, tag 찾기 통과");
+
+        // diaryTag 삭제 -> deleteAllInBatch 고려해보기
+        System.out.println("diaryTag 삭제 시작");
+        for (DiaryTag diaryTag : diaryTags) {
+            diaryTagRepository.delete(diaryTag);
+        }
+        System.out.println("diaryTag 삭제 끝");
+
+        // MemberTag 삭제
+        System.out.println("memberTags 삭제 시작");
+        for (MemberTags memberTag : memberTags) {
+            memberTag.decrementCount();
+            if (memberTag.getMemberTagUsageCount() == 0) {
+                memberTagsRepository.delete(memberTag);
+            }
+        }
+        System.out.println("memberTags 삭제 끝");
+        for (TagList tag : tags) {
+            tag.decrementCount();
+            if (tag.getTagUsageCount() == 0) {
+                tagListRepository.delete(tag);
+            }
+        }
+        System.out.println("tag 감소와 삭제 통과");
+
         diaryRepository.delete(diary);
     }
 
     @Transactional(readOnly = true)
-    public DiarySaveDTO.Response findById(Long id) {
+    public DiaryResponseDTO findById(Long id) {
         Diary diary = diaryRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 일기가 존재하지 않습니다. id = " + id));
         //조회한 결과를 담은 DTO 객체를 생성해서 반환
-        return new DiarySaveDTO.Response(diary);
+        List<DiaryTag> diaryTags = diaryTagRepository.findAllByDiaryId(diary.getId());
+        List<TagList> tags = new ArrayList<>();
+        for (DiaryTag diaryTag : diaryTags) {
+            tags.add(diaryTag.getMemberTags().getTagList());
+        }
+
+        return new DiaryResponseDTO(diary, tags);
     }
 
     @Transactional(readOnly = true)

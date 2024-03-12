@@ -2,7 +2,6 @@ package chzzk.grassdiary.domain.member.entity;
 
 import chzzk.grassdiary.domain.base.BaseCreatedTimeEntity;
 import chzzk.grassdiary.domain.color.ColorCode;
-import chzzk.grassdiary.domain.member.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

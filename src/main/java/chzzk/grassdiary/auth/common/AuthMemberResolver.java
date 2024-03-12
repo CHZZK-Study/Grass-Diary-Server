@@ -4,7 +4,7 @@ import chzzk.grassdiary.auth.exception.AuthenticationException;
 import chzzk.grassdiary.auth.jwt.JwtTokenProvider;
 import chzzk.grassdiary.auth.service.dto.AuthMemberPayload;
 import chzzk.grassdiary.domain.member.Member;
-import chzzk.grassdiary.domain.member.repository.MemberRepository;
+import chzzk.grassdiary.domain.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpHeaders;

@@ -8,7 +8,7 @@ import chzzk.grassdiary.auth.service.dto.GoogleUserInfo;
 import chzzk.grassdiary.auth.service.dto.JWTTokenResponse;
 import chzzk.grassdiary.auth.util.GoogleOAuthUriGenerator;
 import chzzk.grassdiary.domain.member.Member;
-import chzzk.grassdiary.domain.member.repository.MemberRepository;
+import chzzk.grassdiary.domain.member.MemberRepository;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

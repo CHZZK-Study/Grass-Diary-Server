@@ -10,7 +10,7 @@ import chzzk.grassdiary.domain.diary.tag.MemberTagsRepository;
 import chzzk.grassdiary.domain.diary.tag.TagList;
 import chzzk.grassdiary.domain.diary.tag.TagListRepository;
 import chzzk.grassdiary.domain.member.Member;
-import chzzk.grassdiary.domain.member.repository.MemberRepository;
+import chzzk.grassdiary.domain.member.MemberRepository;
 import chzzk.grassdiary.web.dto.diary.TagDTO;
 import java.util.ArrayList;
 import java.util.List;
