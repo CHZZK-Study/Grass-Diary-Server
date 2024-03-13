@@ -7,7 +7,7 @@ import chzzk.grassdiary.domain.diary.DiaryLike;
 import chzzk.grassdiary.domain.diary.DiaryLikeRepository;
 import chzzk.grassdiary.domain.diary.DiaryRepository;
 import chzzk.grassdiary.domain.member.Member;
-import chzzk.grassdiary.domain.member.repository.MemberRepository;
+import chzzk.grassdiary.domain.member.MemberRepository;
 import chzzk.grassdiary.web.dto.share.LatestDiariesDto;
 import chzzk.grassdiary.web.dto.share.Top10DiariesDto;
 import java.util.ArrayList;
@@ -16,7 +16,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
@@ -67,7 +66,7 @@ class ShareServiceTest {
     @Test
     public void findTop10Diaries_ReturnsTop10Diaries() {
         // when
-        List<Top10DiariesDto> top10Diaries = shareService.findTop10Diaries();
+        List<Top10DiariesDto> top10Diaries = shareService.findTop10DiariesThisWeek();
 
         // then
         assertThat(top10Diaries.size()).isEqualTo(10);
@@ -82,10 +81,10 @@ class ShareServiceTest {
     @Test
     public void findLatestDiariesTest() {
         // when
-        Page<LatestDiariesDto> latestDiaries = shareService.findLatestDiaries(0, 10);
+        List<LatestDiariesDto> latestDiaries = shareService.findLatestDiariesAfterCursor(100L, 20);
 
         // then
-        assertThat(latestDiaries.getContent()).hasSize(10);
+        assertThat(latestDiaries.size()).isEqualTo(15);
         for (LatestDiariesDto latestDiary : latestDiaries) {
             System.out.println("latestDiary.content() = " + latestDiary.content());
             System.out.println("latestDiary.nickname() = " + latestDiary.nickname());
