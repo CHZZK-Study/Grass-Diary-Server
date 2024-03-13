@@ -55,6 +55,9 @@ public class Diary extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private ConditionLevel conditionLevel;
 
+    @ColumnDefault("0")
+    private Integer likeCount;
+
     @Builder
     protected Diary(Member member, String content, Boolean isPrivate, Boolean hasImage,
                     Boolean hasTag, ConditionLevel conditionLevel) {
@@ -65,6 +68,7 @@ public class Diary extends BaseTimeEntity {
         this.hasTag = hasTag;
         this.conditionLevel = conditionLevel;
         this.setCreatedAt(LocalDateTime.now());
+        this.likeCount = 0;
     }
 
     public void update(String content, Boolean isPrivate, Boolean hasImage, Boolean hasTag,
@@ -74,5 +78,13 @@ public class Diary extends BaseTimeEntity {
         this.hasImage = hasImage;
         this.hasTag = hasTag;
         this.conditionLevel = conditionLevel;
+    }
+
+    public void incrementLikeCount() {
+        this.likeCount += 1;
+    }
+
+    public void decrementLikeCount() {
+        this.likeCount -= 1;
     }
 }

@@ -84,4 +84,15 @@ public class DiaryController {
     public ResponseEntity<?> todayPopularDiary(@PathVariable Long memberId) {
         return ResponseEntity.ok(diaryService.popularDiary(memberId));
     }
+
+    // 로그인 공부 후 memberId 부분을 auth로? 대체할 수 있는지 알아보기
+    @PostMapping("/like/{diaryId}/{memberId}")
+    public Long addLike(@PathVariable("diaryId") Long diaryId, @PathVariable("memberId") Long memberId) {
+        return diaryService.addLike(diaryId, memberId);
+    }
+
+    @DeleteMapping("/like/{diaryId}/{memberId}")
+    public Long deleteLike(@PathVariable("diaryId") Long diaryId, @PathVariable("memberId") Long memberId) {
+        return diaryService.deleteLike(diaryId, memberId);
+    }
 }
