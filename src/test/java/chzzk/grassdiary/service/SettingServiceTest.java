@@ -3,7 +3,7 @@ package chzzk.grassdiary.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import chzzk.grassdiary.domain.member.Member;
-import chzzk.grassdiary.domain.member.repository.MemberRepository;
+import chzzk.grassdiary.domain.member.MemberRepository;
 import chzzk.grassdiary.web.dto.MemberUpdateRequest;
 import chzzk.grassdiary.web.dto.MemberUpdatedResponse;
 import org.junit.jupiter.api.Test;
