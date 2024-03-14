@@ -1,21 +1,22 @@
 package chzzk.grassdiary.config;
 
 import chzzk.grassdiary.auth.common.AuthMemberResolver;
-import chzzk.grassdiary.auth.config.AuthInterceptor;
+import chzzk.grassdiary.web.filter.JwtAuthFilter;
+import jakarta.servlet.Filter;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebMvc
 @RequiredArgsConstructor
 public class WebMvcConfig implements WebMvcConfigurer {
-    private final AuthInterceptor authInterceptor;
+    private final JwtAuthFilter jwtAuthFilter;
     private final AuthMemberResolver authMemberResolver;
 
     @Override
@@ -23,21 +24,20 @@ public class WebMvcConfig implements WebMvcConfigurer {
         resolvers.add(authMemberResolver);
     }
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(authInterceptor)
-                .order(1)
-                .excludePathPatterns("/css/**", "/*.ico", "/error")
-                .excludePathPatterns("/api/auth/**/google")
-                .addPathPatterns("/api/**");
-    }
-
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000")
-                .allowedMethods("OPTIONS", "GET", "POST", "PUT", "DELETE", "PATCH")
-                .allowedHeaders("Authorization", "Content-Type")
-                .allowCredentials(true);
+    @Bean
+    public FilterRegistrationBean<Filter> authFilter() {
+        FilterRegistrationBean<Filter> registration = new FilterRegistrationBean<>();
+        registration.setFilter(jwtAuthFilter);
+        registration.setOrder(1);
+        registration.addUrlPatterns(
+                "/api/example",
+                "/api/diary/*",
+                "/api/grass/*",
+                "/api/main/*",
+                "/api/member/*",
+                "/api/search/*",
+                "/api/share/*"
+        );
+        return registration;
     }
 }

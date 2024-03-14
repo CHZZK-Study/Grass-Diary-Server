@@ -19,7 +19,6 @@ import chzzk.grassdiary.web.dto.diary.DiaryDTO;
 import chzzk.grassdiary.web.dto.diary.DiaryResponseDTO;
 import chzzk.grassdiary.web.dto.diary.DiarySaveDTO;
 import chzzk.grassdiary.web.dto.diary.DiaryUpdateDTO;
-import chzzk.grassdiary.web.dto.diary.PopularDiaryDTO;
 import chzzk.grassdiary.web.dto.member.GrassInfoDTO;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -27,7 +26,6 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -255,33 +253,6 @@ public class DiaryService {
                 new GrassInfoDTO(thisMonthHistory, colorCode.getRgb())
         );
     }
-
-    /**
-     * 대표 일기(오늘의 좋아요 가장 많은 받은 일기 10개)
-     */
-    @Transactional(readOnly = true)
-    public List<PopularDiaryDTO> popularDiary(Long memberId) {
-        LocalDate today = LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonth(),
-                LocalDate.now().getDayOfMonth());
-
-        List<Diary> popularDiaries = diaryRepository
-                .findTop10ByIsPrivateFalseAndCreatedAtBetweenOrderByDiaryLikesDesc(today.atStartOfDay(),
-                        today.atTime(LocalTime.MAX));
-
-        if (popularDiaries.isEmpty()) {
-            // TODO: 오늘의 일기 없음
-            return null;
-        }
-
-        return popularDiaries.stream()
-                .map(diary -> new PopularDiaryDTO(
-                        diary.getId(),
-                        diary.getContent(),
-                        diary.getDiaryLikes().stream()
-                                .anyMatch(diaryLike -> diaryLike.getMember().getId().equals(memberId))
-                )).collect(Collectors.toList());
-    }
-
     @Transactional
     public Long addLike(Long diaryId, Long memberId) {
         Diary diary = diaryRepository.findById(diaryId)
@@ -320,5 +291,4 @@ public class DiaryService {
         // 추후 DTO로 return값 변경
         return diaryId;
     }
-
 }
