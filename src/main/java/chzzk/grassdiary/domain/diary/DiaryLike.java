@@ -9,6 +9,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +20,9 @@ import lombok.Setter;
 @Setter // DBTest에서 임시 사용
 @NoArgsConstructor
 @Entity
+@Table(name = "diary_like", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"member_id", "diary_id"})
+})
 public class DiaryLike extends BaseCreatedTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

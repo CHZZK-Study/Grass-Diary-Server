@@ -14,11 +14,11 @@ public class DiaryResponseDTO {
     private final Boolean isPrivate;
     private final Boolean hasImage;
     private final Boolean hasTag;
-    //    private final ConditionLevel conditionLevel;
     private final String createdDate;
     private final String createdAt;
     private final List<TagList> tags;
     private final Float transparency;
+    private final Integer likeCount;
 
     public DiaryResponseDTO(Diary diary, List<TagList> tags) {
         this.id = diary.getId();
@@ -31,5 +31,6 @@ public class DiaryResponseDTO {
         this.createdAt = diary.getCreatedAt().format(DateTimeFormatter.ofPattern("HH:mm"));
         this.tags = tags;
         this.transparency = diary.getConditionLevel().getTransparency();
+        this.likeCount = diary.getLikeCount();
     }
 }
