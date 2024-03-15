@@ -3,8 +3,8 @@ package chzzk.grassdiary.web.controller;
 import chzzk.grassdiary.auth.common.AuthenticatedMember;
 import chzzk.grassdiary.auth.service.dto.AuthMemberPayload;
 import chzzk.grassdiary.service.SettingService;
-import chzzk.grassdiary.web.dto.MemberUpdateRequest;
-import chzzk.grassdiary.web.dto.MemberUpdatedResponse;
+import chzzk.grassdiary.web.dto.member.MemberUpdateRequest;
+import chzzk.grassdiary.web.dto.member.MemberUpdatedResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class SettingController {
     private final SettingService settingService;
 
-    // todo. 사진 변경, 잔디 색 변경
     @PutMapping("/api/member/info")
     @Operation(summary = "사용자 정보 수정", description = "닉네임, 소개글 변경")
     @ApiResponses(value = {

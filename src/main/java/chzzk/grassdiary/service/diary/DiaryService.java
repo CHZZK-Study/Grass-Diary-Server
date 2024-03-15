@@ -3,6 +3,7 @@ package chzzk.grassdiary.service.diary;
 import chzzk.grassdiary.domain.color.ColorCode;
 import chzzk.grassdiary.domain.diary.Diary;
 import chzzk.grassdiary.domain.diary.DiaryImageRepository;
+import chzzk.grassdiary.domain.diary.DiaryLike;
 import chzzk.grassdiary.domain.diary.DiaryLikeRepository;
 import chzzk.grassdiary.domain.diary.DiaryRepository;
 import chzzk.grassdiary.domain.diary.tag.DiaryTag;
@@ -251,5 +252,44 @@ public class DiaryService {
                 allByMemberId.size(),
                 new GrassInfoDTO(thisMonthHistory, colorCode.getRgb())
         );
+    }
+
+    @Transactional
+    public Long addLike(Long diaryId, Long memberId) {
+        Diary diary = diaryRepository.findById(diaryId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 일기가 존재하지 않습니다. diaryId = " + diaryId));
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 멤버가 존재하지 않습니다. memberId = " + memberId));
+
+        diaryLikeRepository.findByDiaryIdAndMemberId(diaryId, memberId)
+                .ifPresent(diaryLike -> {
+                    throw new IllegalArgumentException("좋아요를 이미 눌렀습니다.");
+                });
+
+        diaryLikeRepository.save(DiaryLike.builder()
+                .member(member)
+                .diary(diary)
+                .build());
+
+        diary.incrementLikeCount();
+
+        // 추후 DTO로 return값 변경
+        return diaryId;
+    }
+
+    @Transactional
+    public Long deleteLike(Long diaryId, Long memberId) {
+        Diary diary = diaryRepository.findById(diaryId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 일기가 존재하지 않습니다. diaryId = " + diaryId));
+
+        DiaryLike diaryLike = diaryLikeRepository.findByDiaryIdAndMemberId(diaryId, memberId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글에 좋아요를 누르지 않았습니다."));
+
+        diaryLikeRepository.delete(diaryLike);
+
+        diary.decrementLikeCount();
+        // 추후 DTO로 return값 변경
+        return diaryId;
     }
 }
