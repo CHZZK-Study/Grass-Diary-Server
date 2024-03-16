@@ -9,6 +9,7 @@ public record Top10DiariesDto(
         Long diaryId,
         String diaryContent,
         int diaryLikeCount,
+        Long memberId,
         String nickname,
         String createdAt) {
 
@@ -18,6 +19,7 @@ public record Top10DiariesDto(
                         d.getId(),
                         d.getContent(),
                         d.getLikeCount(),
+                        d.getMember().getId(),
                         d.getMember().getNickname(),
                         d.getCreatedAt()
                                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))

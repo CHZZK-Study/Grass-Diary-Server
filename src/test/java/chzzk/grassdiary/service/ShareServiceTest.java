@@ -7,7 +7,7 @@ import chzzk.grassdiary.domain.diary.DiaryRepository;
 import chzzk.grassdiary.domain.member.Member;
 import chzzk.grassdiary.domain.member.MemberRepository;
 import chzzk.grassdiary.web.dto.share.AllLatestDiariesDto;
-import chzzk.grassdiary.web.dto.share.LatestDiariesDto;
+import chzzk.grassdiary.web.dto.share.LatestDiaryDto;
 import chzzk.grassdiary.web.dto.share.Top10DiariesDto;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,7 +72,7 @@ class ShareServiceTest {
         AllLatestDiariesDto latestDiaries = shareService.findLatestDiariesAfterCursor(100L, 50);
 
         // then
-        for (LatestDiariesDto latestDiary : latestDiaries.diaries()) {
+        for (LatestDiaryDto latestDiary : latestDiaries.diaries()) {
             System.out.println("latestDiary.content() = " + latestDiary.content());
             System.out.println("latestDiary.nickname() = " + latestDiary.nickname());
             System.out.println("latestDiary.diaryId() = " + latestDiary.diaryId());
