@@ -3,11 +3,10 @@ package chzzk.grassdiary.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import chzzk.grassdiary.domain.diary.Diary;
-import chzzk.grassdiary.domain.diary.DiaryLike;
-import chzzk.grassdiary.domain.diary.DiaryLikeRepository;
 import chzzk.grassdiary.domain.diary.DiaryRepository;
 import chzzk.grassdiary.domain.member.Member;
 import chzzk.grassdiary.domain.member.MemberRepository;
+import chzzk.grassdiary.web.dto.share.AllLatestDiariesDto;
 import chzzk.grassdiary.web.dto.share.LatestDiariesDto;
 import chzzk.grassdiary.web.dto.share.Top10DiariesDto;
 import java.util.ArrayList;
@@ -30,9 +29,6 @@ class ShareServiceTest {
     @Autowired
     private DiaryRepository diaryRepository;
 
-    @Autowired
-    private DiaryLikeRepository diaryLikeRepository;
-
     @BeforeEach
     public void setUp() {
         Member member = Member.builder()
@@ -42,21 +38,13 @@ class ShareServiceTest {
                 .build();
 
         List<Diary> diaries = new ArrayList<>();
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < 50; i++) {
             Diary diary = Diary.builder()
                     .content("오늘은 맛있는 음식을 먹었다.")
                     .isPrivate(false)
                     .member(member)
                     .build();
             diaries.add(diary);
-        }
-
-        for (int i = 0; i < 5; i++) {
-            DiaryLike diaryLike = DiaryLike.builder()
-                    .diary(diaries.get(i))
-                    .member(member)
-                    .build();
-            diaryLikeRepository.save(diaryLike);
         }
 
         memberRepository.save(member);
@@ -81,14 +69,15 @@ class ShareServiceTest {
     @Test
     public void findLatestDiariesTest() {
         // when
-        List<LatestDiariesDto> latestDiaries = shareService.findLatestDiariesAfterCursor(100L, 20);
+        AllLatestDiariesDto latestDiaries = shareService.findLatestDiariesAfterCursor(100L, 50);
 
         // then
-        assertThat(latestDiaries.size()).isEqualTo(15);
-        for (LatestDiariesDto latestDiary : latestDiaries) {
+        for (LatestDiariesDto latestDiary : latestDiaries.diaries()) {
             System.out.println("latestDiary.content() = " + latestDiary.content());
             System.out.println("latestDiary.nickname() = " + latestDiary.nickname());
             System.out.println("latestDiary.diaryId() = " + latestDiary.diaryId());
         }
+        assertThat(latestDiaries.diaries().size()).isEqualTo(50);
+        assertThat(latestDiaries.diaries().size()).isNotEqualTo(51);
     }
 }

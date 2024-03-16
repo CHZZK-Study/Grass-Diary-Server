@@ -17,7 +17,7 @@ public record Top10DiariesDto(
                 .map(d -> new Top10DiariesDto(
                         d.getId(),
                         d.getContent(),
-                        d.getDiaryLikes().size(),
+                        d.getLikeCount(),
                         d.getMember().getNickname(),
                         d.getCreatedAt()
                                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
