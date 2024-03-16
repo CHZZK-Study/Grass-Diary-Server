@@ -31,12 +31,15 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registration.setOrder(1);
         registration.addUrlPatterns(
                 "/api/example",
+                "/api/test",
                 "/api/diary/*",
                 "/api/grass/*",
                 "/api/main/*",
                 "/api/member/*",
                 "/api/search/*",
-                "/api/share/*"
+                "/api/shared/diaries/*",
+                "/api/members/me",
+                "/api/me"
         );
         return registration;
     }
