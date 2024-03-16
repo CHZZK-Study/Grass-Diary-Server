@@ -16,7 +16,7 @@ public record LatestDiariesDto(
                 .map(d -> new LatestDiariesDto(
                         d.getId(),
                         d.getContent(),
-                        d.getDiaryLikes().size(),
+                        d.getLikeCount(),
                         d.getMember().getNickname(),
                         d.getCreatedAt()
                                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))

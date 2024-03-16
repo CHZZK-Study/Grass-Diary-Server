@@ -19,11 +19,14 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
 
     List<Diary> findAllByMemberId(Long memberId);
 
-    @Query("SELECT d FROM Diary d LEFT JOIN d.diaryLikes dl WHERE d.isPrivate = false AND d.createdAt >= :startOfDay AND d.createdAt <= :endOfDay"
-            + " GROUP BY d.id ORDER BY COUNT(dl.id) DESC, d.createdAt ASC")
-    Page<Diary> findByIsPrivateFalseAndCreatedAtBetween(LocalDateTime startOfDay, LocalDateTime endOfDay,
-                                                        PageRequest pageRequest);
-
-    List<Diary> findByIsPrivateFalseAndIdLessThanOrderByCreatedAtDesc(Long cursorId, Pageable pageable);
+    @Query("SELECT d FROM Diary d WHERE d.isPrivate = false"
+            + " AND d.createdAt >= :startOfWeek AND d.createdAt <= :endOfWeek"
+            + " ORDER BY d.likeCount DESC, d.createdAt ASC")
+    Page<Diary> findTop10DiariesThisWeek(LocalDateTime startOfWeek, LocalDateTime endOfWeek, PageRequest pageRequest);
+    
+    @Query("SELECT d FROM Diary d WHERE d.isPrivate = false"
+            + " AND d.id < :cursorId"
+            + " ORDER BY d.createdAt DESC, d.id DESC")
+    List<Diary> findLatestDiaries(Long cursorId, Pageable pageable);
 }
 
