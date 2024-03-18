@@ -26,6 +26,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -65,8 +66,8 @@ public class DiaryService {
             }
         }
 
-//        Random random = new Random();
-//        member.addRandomPoint(random.nextInt(10) + 1);
+        Random random = new Random();
+        member.addRandomPoint(random.nextInt(10) + 1);
 
         return diary.getId();
     }

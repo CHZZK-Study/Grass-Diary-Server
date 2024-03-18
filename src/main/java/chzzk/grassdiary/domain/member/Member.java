@@ -48,7 +48,7 @@ public class Member extends BaseTimeEntity {
     private Long grassCount;
 
     @ColumnDefault("0")
-    private Integer rewardPoint;
+    private int rewardPoint;
 
     @ColumnDefault("false")
     private Boolean hasNewColor;
@@ -83,7 +83,7 @@ public class Member extends BaseTimeEntity {
         return text != null && !text.isBlank();
     }
 
-//    public void addRandomPoint(Integer randomPoint) {
-//        this.rewardPoint += randomPoint;
-//    }
+    public void addRandomPoint(Integer randomPoint) {
+        this.rewardPoint += randomPoint;
+    }
 }
