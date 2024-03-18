@@ -31,25 +31,25 @@ import org.springframework.web.bind.annotation.RestController;
 public class DiaryController {
     private final DiaryService diaryService;
 
-    @PostMapping("/{id}")
-    public Long save(@PathVariable(name = "id") Long id, @RequestBody DiarySaveRequestDTO requestDto) {
-        return diaryService.save(id, requestDto);
+    @PostMapping("/{memberId}")
+    public Long save(@PathVariable(name = "memberId") Long memberId, @RequestBody DiarySaveRequestDTO requestDto) {
+        return diaryService.save(memberId, requestDto);
     }
 
-    @PatchMapping("/{id}")
-    public Long update(@PathVariable(name = "id") Long id, @RequestBody DiaryUpdateRequestDTO requestDto) {
-        return diaryService.update(id, requestDto);
+    @PatchMapping("/{diaryId}")
+    public Long update(@PathVariable(name = "diaryId") Long diaryId, @RequestBody DiaryUpdateRequestDTO requestDto) {
+        return diaryService.update(diaryId, requestDto);
     }
 
-    @DeleteMapping("/{id}")
-    public Long delete(@PathVariable(name = "id") Long id) {
-        diaryService.delete(id);
-        return id;
+    @DeleteMapping("/{diaryId}")
+    public Long delete(@PathVariable(name = "diaryId") Long diaryId) {
+        diaryService.delete(diaryId);
+        return diaryId;
     }
 
-    @GetMapping("/{id}")
-    public DiaryResponseDTO findById(@PathVariable(name = "id") Long id) {
-        return diaryService.findById(id);
+    @GetMapping("/{diaryId}")
+    public DiaryResponseDTO findById(@PathVariable(name = "diaryId") Long diaryId) {
+        return diaryService.findById(diaryId);
     }
 
     /**
