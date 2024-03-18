@@ -65,6 +65,9 @@ public class DiaryService {
             }
         }
 
+//        Random random = new Random();
+//        member.addRandomPoint(random.nextInt(10) + 1);
+
         return diary.getId();
     }
 
@@ -253,6 +256,7 @@ public class DiaryService {
                 new GrassInfoDTO(thisMonthHistory, colorCode.getRgb())
         );
     }
+
     @Transactional
     public Long addLike(Long diaryId, Long memberId) {
         Diary diary = diaryRepository.findById(diaryId)
@@ -266,12 +270,12 @@ public class DiaryService {
                     throw new IllegalArgumentException("좋아요를 이미 눌렀습니다.");
                 });
 
-        diaryLikeRepository.save(DiaryLike.builder()
+        DiaryLike diaryLike = DiaryLike.builder()
                 .member(member)
-                .diary(diary)
-                .build());
+                .build();
 
-        diary.incrementLikeCount();
+        diary.addDiaryLike(diaryLike);
+        diaryLikeRepository.save(diaryLike);
 
         // 추후 DTO로 return값 변경
         return diaryId;
@@ -285,9 +289,9 @@ public class DiaryService {
         DiaryLike diaryLike = diaryLikeRepository.findByDiaryIdAndMemberId(diaryId, memberId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글에 좋아요를 누르지 않았습니다."));
 
+        diary.deleteDiaryLike(diaryLike);
         diaryLikeRepository.delete(diaryLike);
 
-        diary.decrementLikeCount();
         // 추후 DTO로 return값 변경
         return diaryId;
     }

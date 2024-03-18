@@ -82,4 +82,8 @@ public class Member extends BaseTimeEntity {
     private boolean isAvailable(String text) {
         return text != null && !text.isBlank();
     }
+
+//    public void addRandomPoint(Integer randomPoint) {
+//        this.rewardPoint += randomPoint;
+//    }
 }

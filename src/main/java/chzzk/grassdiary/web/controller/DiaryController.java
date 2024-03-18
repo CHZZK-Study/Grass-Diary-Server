@@ -31,9 +31,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class DiaryController {
     private final DiaryService diaryService;
 
-    /**
-     * CRUD
-     */
     @PostMapping("/{id}")
     public Long save(@PathVariable(name = "id") Long id, @RequestBody DiarySaveDTO.Request requestDto) {
         return diaryService.save(id, requestDto);

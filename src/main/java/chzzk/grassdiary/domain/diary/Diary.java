@@ -81,6 +81,18 @@ public class Diary extends BaseTimeEntity {
         this.conditionLevel = conditionLevel;
     }
 
+    public void addDiaryLike(DiaryLike diaryLike) {
+        diaryLikes.add(diaryLike);
+        diaryLike.setDiary(this);
+        incrementLikeCount();
+    }
+
+    public void deleteDiaryLike(DiaryLike diaryLike) {
+        diaryLikes.removeIf(dl -> dl.getId().equals(diaryLike.getId()));
+//        diaryLike.setDiary(null);
+        decrementLikeCount();
+    }
+
     public void incrementLikeCount() {
         this.likeCount += 1;
     }
