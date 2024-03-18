@@ -17,8 +17,8 @@ import chzzk.grassdiary.domain.member.MemberRepository;
 import chzzk.grassdiary.web.dto.diary.CountAndMonthGrassDTO;
 import chzzk.grassdiary.web.dto.diary.DiaryDTO;
 import chzzk.grassdiary.web.dto.diary.DiaryResponseDTO;
-import chzzk.grassdiary.web.dto.diary.DiarySaveDTO;
-import chzzk.grassdiary.web.dto.diary.DiaryUpdateDTO;
+import chzzk.grassdiary.web.dto.diary.DiarySaveRequestDTO;
+import chzzk.grassdiary.web.dto.diary.DiaryUpdateRequestDTO;
 import chzzk.grassdiary.web.dto.member.GrassInfoDTO;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -26,6 +26,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -47,7 +48,7 @@ public class DiaryService {
     private final DiaryTagRepository diaryTagRepository;
 
     @Transactional
-    public Long save(Long id, DiarySaveDTO.Request requestDto) {
+    public Long save(Long id, DiarySaveRequestDTO requestDto) {
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다. id = " + id));
 
@@ -65,11 +66,14 @@ public class DiaryService {
             }
         }
 
+        Random random = new Random();
+        member.addRandomPoint(random.nextInt(10) + 1);
+
         return diary.getId();
     }
 
     @Transactional
-    public Long update(Long id, DiaryUpdateDTO.Request requestDto) {
+    public Long update(Long id, DiaryUpdateRequestDTO requestDto) {
         Diary diary = diaryRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 일기가 존재하지 않습니다. id = " + id));
         // 기존 diaryTag, memberTags, tagList 찾기
@@ -267,12 +271,12 @@ public class DiaryService {
                     throw new IllegalArgumentException("좋아요를 이미 눌렀습니다.");
                 });
 
-        diaryLikeRepository.save(DiaryLike.builder()
+        DiaryLike diaryLike = DiaryLike.builder()
                 .member(member)
-                .diary(diary)
-                .build());
+                .build();
 
-        diary.incrementLikeCount();
+        diary.addDiaryLike(diaryLike);
+        diaryLikeRepository.save(diaryLike);
 
         // 추후 DTO로 return값 변경
         return diaryId;
@@ -286,9 +290,9 @@ public class DiaryService {
         DiaryLike diaryLike = diaryLikeRepository.findByDiaryIdAndMemberId(diaryId, memberId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 게시글에 좋아요를 누르지 않았습니다."));
 
+        diary.deleteDiaryLike(diaryLike);
         diaryLikeRepository.delete(diaryLike);
 
-        diary.decrementLikeCount();
         // 추후 DTO로 return값 변경
         return diaryId;
     }

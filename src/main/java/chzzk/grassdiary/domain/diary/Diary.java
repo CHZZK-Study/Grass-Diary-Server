@@ -57,7 +57,7 @@ public class Diary extends BaseTimeEntity {
     private ConditionLevel conditionLevel;
 
     @ColumnDefault("0")
-    private Integer likeCount;
+    private int likeCount;
 
     @Builder
     protected Diary(Member member, String content, Boolean isPrivate, Boolean hasImage,
@@ -79,6 +79,18 @@ public class Diary extends BaseTimeEntity {
         this.hasImage = hasImage;
         this.hasTag = hasTag;
         this.conditionLevel = conditionLevel;
+    }
+
+    public void addDiaryLike(DiaryLike diaryLike) {
+        diaryLikes.add(diaryLike);
+        diaryLike.setDiary(this);
+        incrementLikeCount();
+    }
+
+    public void deleteDiaryLike(DiaryLike diaryLike) {
+        diaryLikes.removeIf(dl -> dl.getId().equals(diaryLike.getId()));
+//        diaryLike.setDiary(null);
+        decrementLikeCount();
     }
 
     public void incrementLikeCount() {
