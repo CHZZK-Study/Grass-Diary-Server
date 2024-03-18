@@ -3,8 +3,8 @@ package chzzk.grassdiary.web.controller;
 import chzzk.grassdiary.service.diary.DiaryService;
 import chzzk.grassdiary.web.dto.diary.DiaryDTO;
 import chzzk.grassdiary.web.dto.diary.DiaryResponseDTO;
-import chzzk.grassdiary.web.dto.diary.DiarySaveDTO;
-import chzzk.grassdiary.web.dto.diary.DiaryUpdateDTO;
+import chzzk.grassdiary.web.dto.diary.DiarySaveRequestDTO;
+import chzzk.grassdiary.web.dto.diary.DiaryUpdateRequestDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -32,12 +32,12 @@ public class DiaryController {
     private final DiaryService diaryService;
 
     @PostMapping("/{id}")
-    public Long save(@PathVariable(name = "id") Long id, @RequestBody DiarySaveDTO.Request requestDto) {
+    public Long save(@PathVariable(name = "id") Long id, @RequestBody DiarySaveRequestDTO requestDto) {
         return diaryService.save(id, requestDto);
     }
 
     @PatchMapping("/{id}")
-    public Long update(@PathVariable(name = "id") Long id, @RequestBody DiaryUpdateDTO.Request requestDto) {
+    public Long update(@PathVariable(name = "id") Long id, @RequestBody DiaryUpdateRequestDTO requestDto) {
         return diaryService.update(id, requestDto);
     }
 

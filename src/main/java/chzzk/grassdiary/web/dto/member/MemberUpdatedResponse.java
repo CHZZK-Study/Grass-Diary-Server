@@ -1,8 +1,7 @@
-package chzzk.grassdiary.web.dto;
+package chzzk.grassdiary.web.dto.member;
 
 public record MemberUpdatedResponse(
         String nickname,
         String profileIntro
-        //String picture
 ) {
 }

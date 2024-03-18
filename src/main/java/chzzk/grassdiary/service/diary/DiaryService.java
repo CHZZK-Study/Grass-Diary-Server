@@ -17,8 +17,8 @@ import chzzk.grassdiary.domain.member.MemberRepository;
 import chzzk.grassdiary.web.dto.diary.CountAndMonthGrassDTO;
 import chzzk.grassdiary.web.dto.diary.DiaryDTO;
 import chzzk.grassdiary.web.dto.diary.DiaryResponseDTO;
-import chzzk.grassdiary.web.dto.diary.DiarySaveDTO;
-import chzzk.grassdiary.web.dto.diary.DiaryUpdateDTO;
+import chzzk.grassdiary.web.dto.diary.DiarySaveRequestDTO;
+import chzzk.grassdiary.web.dto.diary.DiaryUpdateRequestDTO;
 import chzzk.grassdiary.web.dto.member.GrassInfoDTO;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -47,7 +47,7 @@ public class DiaryService {
     private final DiaryTagRepository diaryTagRepository;
 
     @Transactional
-    public Long save(Long id, DiarySaveDTO.Request requestDto) {
+    public Long save(Long id, DiarySaveRequestDTO requestDto) {
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다. id = " + id));
 
@@ -72,7 +72,7 @@ public class DiaryService {
     }
 
     @Transactional
-    public Long update(Long id, DiaryUpdateDTO.Request requestDto) {
+    public Long update(Long id, DiaryUpdateRequestDTO requestDto) {
         Diary diary = diaryRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 일기가 존재하지 않습니다. id = " + id));
         // 기존 diaryTag, memberTags, tagList 찾기

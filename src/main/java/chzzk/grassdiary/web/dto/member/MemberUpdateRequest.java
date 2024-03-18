@@ -1,4 +1,4 @@
-package chzzk.grassdiary.web.dto;
+package chzzk.grassdiary.web.dto.member;
 
 public record MemberUpdateRequest(
         String nickname,
