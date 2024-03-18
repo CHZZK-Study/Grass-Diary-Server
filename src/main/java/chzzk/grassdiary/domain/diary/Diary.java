@@ -57,7 +57,7 @@ public class Diary extends BaseTimeEntity {
     private ConditionLevel conditionLevel;
 
     @ColumnDefault("0")
-    private Integer likeCount;
+    private int likeCount;
 
     @Builder
     protected Diary(Member member, String content, Boolean isPrivate, Boolean hasImage,

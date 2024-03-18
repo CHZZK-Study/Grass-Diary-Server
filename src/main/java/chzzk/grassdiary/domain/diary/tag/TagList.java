@@ -25,7 +25,7 @@ public class TagList {
     private String tag;
 
     @ColumnDefault("0")
-    private Integer tagUsageCount;
+    private int tagUsageCount;
 
     @Builder
     public TagList(String tag) {
