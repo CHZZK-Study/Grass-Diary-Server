@@ -45,7 +45,7 @@ public class Member extends BaseTimeEntity {
     @Lob
     private String picture; // auth
 
-    private Long grassCount;
+    private int grassCount;
 
     @ColumnDefault("0")
     private int rewardPoint;
