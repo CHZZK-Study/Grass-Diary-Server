@@ -64,8 +64,6 @@ public class OAuthService {
                 .email(googleUserInfo.email())
                 .picture(googleUserInfo.picture())
                 .currentColorCode(colorCode)
-                .hasNewColor(false)
-                .profileIntro("안녕하세요!")
                 .build();
 
         return memberRepository.save(member);

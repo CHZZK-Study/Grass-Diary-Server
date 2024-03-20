@@ -51,7 +51,7 @@ public class Member extends BaseTimeEntity {
     private int rewardPoint;
 
     @ColumnDefault("false")
-    private Boolean hasNewColor;
+    private boolean hasNewColor;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private ColorCode currentColorCode;
