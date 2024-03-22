@@ -153,4 +153,4 @@
 //                .isInstanceOf(IllegalArgumentException.class)
 //                .hasMessageContaining("해당 일기가 존재하지 않습니다. id = " + id);
 //    }
-}
+//}
