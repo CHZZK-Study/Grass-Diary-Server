@@ -45,13 +45,13 @@ public class Member extends BaseTimeEntity {
     @Lob
     private String picture; // auth
 
-    private Long grassCount;
+    private int grassCount;
 
     @ColumnDefault("0")
     private int rewardPoint;
 
     @ColumnDefault("false")
-    private Boolean hasNewColor;
+    private boolean hasNewColor;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private ColorCode currentColorCode;

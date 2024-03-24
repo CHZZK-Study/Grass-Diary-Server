@@ -7,6 +7,8 @@ import chzzk.grassdiary.auth.service.dto.GoogleOAuthToken;
 import chzzk.grassdiary.auth.service.dto.GoogleUserInfo;
 import chzzk.grassdiary.auth.service.dto.JWTTokenResponse;
 import chzzk.grassdiary.auth.util.GoogleOAuthUriGenerator;
+import chzzk.grassdiary.domain.color.ColorCode;
+import chzzk.grassdiary.domain.color.ColorCodeRepository;
 import chzzk.grassdiary.domain.member.Member;
 import chzzk.grassdiary.domain.member.MemberRepository;
 import java.util.Optional;
@@ -24,6 +26,7 @@ public class OAuthService {
     private final GoogleOAuthClient googleOAuthClient;
     private final MemberRepository memberRepository;
     private final JwtTokenProvider jwtTokenProvider;
+    private final ColorCodeRepository colorCodeRepository;
 
     public String findRedirectUri() {
         return googleOAuthUriGenerator.generateUrl();
@@ -50,10 +53,17 @@ public class OAuthService {
             return foundMember.get();
         }
 
+        ColorCode colorCode = colorCodeRepository.findByColorName("GREEN")
+                .orElseGet(() -> colorCodeRepository.save(ColorCode.builder()
+                        .colorName("GREEN")
+                        .rgb("0,255,0")
+                        .build()));
+
         Member member = Member.builder()
                 .nickname(googleUserInfo.nickname())
                 .email(googleUserInfo.email())
                 .picture(googleUserInfo.picture())
+                .currentColorCode(colorCode)
                 .build();
 
         return memberRepository.save(member);
