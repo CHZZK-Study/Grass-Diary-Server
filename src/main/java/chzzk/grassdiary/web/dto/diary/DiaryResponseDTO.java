@@ -19,8 +19,9 @@ public class DiaryResponseDTO {
     private final List<TagList> tags;
     private final Float transparency;
     private final Integer likeCount;
+    private final boolean isLikedByLogInMember;
 
-    public DiaryResponseDTO(Diary diary, List<TagList> tags) {
+    public DiaryResponseDTO(Diary diary, List<TagList> tags, boolean isLikedByLogInMember) {
         this.id = diary.getId();
         this.memberId = diary.getMember().getId();
         this.content = diary.getContent();
@@ -32,5 +33,6 @@ public class DiaryResponseDTO {
         this.tags = tags;
         this.transparency = diary.getConditionLevel().getTransparency();
         this.likeCount = diary.getLikeCount();
+        this.isLikedByLogInMember = isLikedByLogInMember;
     }
 }
