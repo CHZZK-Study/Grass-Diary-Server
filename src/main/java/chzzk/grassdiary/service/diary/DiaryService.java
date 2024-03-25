@@ -170,9 +170,9 @@ public class DiaryService {
     }
 
     @Transactional(readOnly = true)
-    public DiaryResponseDTO findById(Long id) {
-        Diary diary = diaryRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 일기가 존재하지 않습니다. id = " + id));
+    public DiaryResponseDTO findById(Long diaryId, Long logInMemberId) {
+        Diary diary = diaryRepository.findById(diaryId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 일기가 존재하지 않습니다. diaryId = " + diaryId));
         //조회한 결과를 담은 DTO 객체를 생성해서 반환
         List<DiaryTag> diaryTags = diaryTagRepository.findAllByDiaryId(diary.getId());
         List<TagList> tags = new ArrayList<>();
@@ -180,7 +180,9 @@ public class DiaryService {
             tags.add(diaryTag.getMemberTags().getTagList());
         }
 
-        return new DiaryResponseDTO(diary, tags);
+        boolean isLiked = diaryLikeRepository.findByDiaryIdAndMemberId(diaryId, logInMemberId).isPresent();
+
+        return new DiaryResponseDTO(diary, tags, isLiked);
     }
 
     @Transactional(readOnly = true)

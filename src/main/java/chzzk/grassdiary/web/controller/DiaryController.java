@@ -1,5 +1,7 @@
 package chzzk.grassdiary.web.controller;
 
+import chzzk.grassdiary.auth.common.AuthenticatedMember;
+import chzzk.grassdiary.auth.service.dto.AuthMemberPayload;
 import chzzk.grassdiary.service.diary.DiaryService;
 import chzzk.grassdiary.web.dto.diary.DiaryDTO;
 import chzzk.grassdiary.web.dto.diary.DiaryResponseDTO;
@@ -48,8 +50,9 @@ public class DiaryController {
     }
 
     @GetMapping("/{diaryId}")
-    public DiaryResponseDTO findById(@PathVariable(name = "diaryId") Long diaryId) {
-        return diaryService.findById(diaryId);
+    public DiaryResponseDTO findById(@PathVariable(name = "diaryId") Long diaryId,
+                                     @AuthenticatedMember AuthMemberPayload payload) {
+        return diaryService.findById(diaryId, payload.id());
     }
 
     /**
