@@ -21,7 +21,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Builder
@@ -37,20 +36,18 @@ public class Member extends BaseTimeEntity {
 
     @Column(nullable = false, name = "given_name", unique = true)
     @Size(min = 1, max = 20)
-    private String nickname;  // auth
+    private String nickname;
 
     @Column(nullable = false, length = 200)
-    private String email; // auth
+    private String email;
 
     @Lob
-    private String picture; // auth
+    private String picture;
 
-    private int grassCount;
+    private long grassCount;
 
-    @ColumnDefault("0")
     private int rewardPoint;
 
-    @ColumnDefault("false")
     private boolean hasNewColor;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -68,7 +65,16 @@ public class Member extends BaseTimeEntity {
         this.rewardPoint = 0;
     }
 
-    // todo. 잔디 색 변경, 사진 변경
+    public static Member of(String nickname, String email, String picture, ColorCode currentColorCode) {
+        return Member.builder()
+                .nickname(nickname)
+                .email(email)
+                .picture(picture)
+                .currentColorCode(currentColorCode)
+                .profileIntro("")
+                .build();
+    }
+
     public void updateProfile(String nickname, String profileIntro) {
         if (isAvailable(nickname)) {
             this.nickname = nickname;

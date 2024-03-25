@@ -6,12 +6,8 @@ import chzzk.grassdiary.domain.diary.Diary;
 import chzzk.grassdiary.domain.diary.DiaryRepository;
 import chzzk.grassdiary.domain.member.Member;
 import chzzk.grassdiary.domain.member.MemberRepository;
-<<<<<<< Updated upstream
 import chzzk.grassdiary.web.dto.share.AllLatestDiariesDto;
 import chzzk.grassdiary.web.dto.share.LatestDiaryDto;
-=======
-import chzzk.grassdiary.web.dto.share.LatestDiariesDto;
->>>>>>> Stashed changes
 import chzzk.grassdiary.web.dto.share.Top10DiariesDto;
 import java.util.ArrayList;
 import java.util.List;
