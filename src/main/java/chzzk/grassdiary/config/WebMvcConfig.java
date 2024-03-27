@@ -1,7 +1,7 @@
 package chzzk.grassdiary.config;
 
 import chzzk.grassdiary.auth.common.AuthMemberResolver;
-import chzzk.grassdiary.web.filter.JwtAuthFilter;
+import chzzk.grassdiary.auth.filter.JwtAuthFilter;
 import jakarta.servlet.Filter;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
