@@ -16,7 +16,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class SettingController {
     private final SettingService settingService;
 
-    @PutMapping("/api/members/me")
+    @PatchMapping("/api/members/me")
     @Operation(summary = "사용자 정보 수정", description = "닉네임, 소개글 변경")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공",

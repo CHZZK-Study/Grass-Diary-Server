@@ -1,4 +1,4 @@
-package chzzk.grassdiary.web.filter;
+package chzzk.grassdiary.auth.filter;
 
 import chzzk.grassdiary.auth.exception.AuthenticationException;
 import chzzk.grassdiary.auth.jwt.JwtTokenExtractor;
@@ -27,7 +27,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         response.setHeader("Access-Control-Allow-Methods", "*");
-        response.setHeader("Access-Control-Allow-Headers", "authorization");
+        response.setHeader("Access-Control-Allow-Headers",
+                "authorization, content-type, accept, origin, x-requested-with");
         response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
         response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("Access-Control-Max-Age", "3600");
